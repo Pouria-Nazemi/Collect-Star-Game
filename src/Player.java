@@ -1,12 +1,17 @@
 
 public class Player {
-    private static Player p1;
-    private static Player p2;
+    private static Player p1=null;
+    private static Player p2=null;
     private int score = 0;
     private int[] limit;
     private Coordinates point;
 
     private Player(){
+
+    }
+
+    public void setPointOfPlayer(int x, int y) {
+        this.point = new Coordinates(x,y);
     }
 
     public static Player getP1() {
@@ -20,8 +25,8 @@ public class Player {
         return p2;
     }
 
-    public void getBoard(){
-        //Game.getBoard().Board;
-        
+    public void updateBoard(){//test
+        //Game.getBoardInstance().setBoard(new Wall(3,1),3,1);
+        //Game.getBoardInstance().setBoard(null,3,1);
     }
 }

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Board {
     private int width;
     private int height;
-    Object[][] Board;
+    private Object[][] Board;
 
     public Board() {
         gamePreparation();
@@ -17,12 +17,17 @@ public class Board {
         this.height = height;
     }
 
+    public void setBoard(Object obj,int x , int y) {
+        this.Board[y][x] = obj;
+    }
+
     public Object[][] getBoard() {
         return Board;
     }
     private Boolean boardDimentionControl(int num){
         return num >= 2;
     }
+
     private void gamePreparation(){
         System.out.println("Enter the dimention of the board of the game ");
         Scanner input = new Scanner(System.in);
@@ -54,17 +59,17 @@ public class Board {
             Y = input.nextInt()-1;
             switch(objectCreator){
                 case 1:{
-                    this.Board[Y][X] = new Wall(X,Y);
+                    this.setBoard(new Wall(X,Y),X,Y);
                     break;
                 }
-                case 2:{    
-                    this.Board[Y][X] = new Star(X,Y);
+                case 2:{
+                    this.setBoard(new Star(X,Y),X,Y);
                     break;
                 }
                 case 3: {
                     System.out.print("Enter the valueOfLimit: ");
                     int valueOfLimit = input.nextInt();
-                    this.Board[Y][X] = new SpeedLimiter(X,Y,valueOfLimit);
+                    this.setBoard(new SpeedLimiter(X,Y,valueOfLimit),X,Y);
                     break;
                 }
                 case 0: {
@@ -78,6 +83,22 @@ public class Board {
             System.out.println("\t 1.Wall\n\t 2.Star\n\t 3.SpeedLimiter\n\t 0.Finish");
             objectCreator = input.nextInt();  
         }
+        System.out.println("Enter the position of the Player 1: ");
+        System.out.print("X: ");
+        X = input.nextInt()-1;
+        System.out.print("\nY: ");
+        Y = input.nextInt()-1;
+        Player.getP1().setPointOfPlayer(X,Y);
+        this.setBoard(Player.getP1(),X,Y);
+
+        System.out.println("Enter the position of the Player 2: ");
+        System.out.print("X: ");
+        X = input.nextInt()-1;
+        System.out.print("\nY: ");
+        Y = input.nextInt()-1;
+        Player.getP2().setPointOfPlayer(X,Y);
+        this.setBoard(Player.getP2(),X,Y);
+
     }
     public void showBoard(){
         for (int row = 0; row < this.height; row++) {
@@ -99,6 +120,15 @@ public class Board {
                             SpeedLimiter sl = (SpeedLimiter) Board[row][col];
                             System.out.print(sl.getLimitingValue());
                             break;
+                        case "Player":
+                            if(Board[row][col].equals(Player.getP1())) {
+                                System.out.print("#");
+                            }
+
+                            else if (Board[row][col].equals(Player.getP2())){
+                                System.out.print("@");
+                             }
+                            break;
                         default:
                             System.out.print(" ");
                             break;
@@ -106,7 +136,6 @@ public class Board {
                 }
                 else{
                    System.out.print("| ");
-                   //System.out.print("_ ");
                 }
             }
             System.out.println();
