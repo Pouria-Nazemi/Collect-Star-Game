@@ -9,12 +9,12 @@ public class Game {
         return board;
     }
     
-    
+
     public static void main(String[] args) {
         Board board = new Board();
         setBoard(board);
-        Player p1 = new Player();
-        p1.getBoard();
+        Player p1 = Player.getP1();
+       // p1.getBoard(); ino pouria testi gozashte
         board.showBoard();
     }
 
