@@ -14,7 +14,7 @@ public class Game {
         Board board = new Board();
         setBoard(board);
         Player p1 = Player.getP1();
-       // p1.getBoard(); ino pouria testi gozashte
+      
         board.showBoard();
     }
 
