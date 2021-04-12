@@ -13,10 +13,17 @@ public class Board {
         this.width = width;
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
     public void setHeight(int height) {
         this.height = height;
     }
-
     public void setBoard(Object obj,int x , int y) {
         this.Board[y][x] = obj;
     }
@@ -141,5 +148,9 @@ public class Board {
             System.out.println();
   
         }
+    }
+
+    public Object getBoardElement(int x,int y){
+        return getBoard()[y][x];
     }
 }
