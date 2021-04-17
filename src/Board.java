@@ -25,12 +25,12 @@ public class Board {
         this.height = height;
     }
     public void setBoard(Object obj,int x , int y) {
-        this.Board[y][x] = obj;
+        this.Board[x][y] = obj;
     }
 
-    public Object[][] getBoard() {
+    /*public Object[][] getBoard() {
         return Board;
-    }
+    }*/
     private Boolean boardDimentionControl(int num){
         return num >= 2;
     }
@@ -151,6 +151,6 @@ public class Board {
     }
 
     public Object getBoardElement(int x,int y){
-        return getBoard()[y][x];
+        return Board[x][y];
     }
 }

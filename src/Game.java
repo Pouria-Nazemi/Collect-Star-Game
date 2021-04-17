@@ -17,6 +17,8 @@ public class Game {
         Player p2 = Player.getP2();
         p1.updateBoard();
         board.showBoard();
+        //Player.gettingDestinationAndMove();
+        //Player.gettingDestinationAndMove();
     }
 
     

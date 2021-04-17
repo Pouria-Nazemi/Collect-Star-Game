@@ -5,6 +5,7 @@ public class Star {
 
     public Star(int x,int y) {
         this.point = new Coordinates(x,y);
+        count++;
     }
     
 }
