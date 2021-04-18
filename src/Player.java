@@ -53,32 +53,25 @@ public class Player {
         int XGoal = input.nextInt() - 1;
         System.out.print("\nY: ");
         int YGoal = input.nextInt() - 1;
-        String method = turn.checkDirection(XGoal, YGoal);
-        if (method.equalsIgnoreCase("horizontal")) {
-            if(turn.horizontalDirectionCheck(XGoal, YGoal)){
-                turn.starCounter(XGoal,YGoal);
-                turn.Move(XGoal,YGoal);
+        if (turn.destinationValidator(XGoal, YGoal) && turn.pathCheck(XGoal, YGoal)) {
+                turn.starCounter(XGoal, YGoal);
+                turn.Move(XGoal, YGoal);
                 Game.getBoardInstance().showBoard();
-            }
-            else{
-                System.out.println("false");
-            }
         }
-        else if (method.equalsIgnoreCase("vertical")) {
-            if(turn.verticalDirectionCheck(XGoal, YGoal)){
-                turn.starCounter(XGoal,YGoal);
-                turn.Move(XGoal,YGoal);
-                Game.getBoardInstance().showBoard();
-            }
-            else{
-                System.out.println("false");
-            }
-        }
-        else {
-            System.out.println("false");
+        else{
+            System.out.println("false Destination, Enter correct Destination: ");
+            do {
+                System.out.println(playerTurn);
+                System.out.print("X: ");
+                XGoal = input.nextInt() - 1;
+                System.out.print("\nY: ");
+                YGoal = input.nextInt() - 1;
+            }while(!turn.destinationValidator(XGoal, YGoal) && turn.pathCheck(XGoal, YGoal));
+            turn.starCounter(XGoal, YGoal);
+            turn.Move(XGoal, YGoal);
+            Game.getBoardInstance().showBoard();
         }
     }
-
     public static Player changeTurn() {
         if (turn) { // true stands for p1 turn
             turn = false;
@@ -103,7 +96,7 @@ public class Player {
         }
     }*/
 
-    public boolean verticalDirectionCheck(int xGoal, int yGoal) {//amoodi
+    public boolean pathCheck(int xGoal, int yGoal) {//amoodi
         if (this.point.x < xGoal) {//down
             for (int i = this.point.x + 1; i <= xGoal; i++) {
                 if (Game.getBoardInstance().getBoardElement(i, this.point.y) != null) {
@@ -132,10 +125,6 @@ public class Player {
                 }
             }
         }
-        return true;
-    }
-
-    public boolean horizontalDirectionCheck(int xGoal, int yGoal) {//ofoghi
         if (this.point.y < yGoal) {//rast
             for (int i = this.point.y + 1; i <= yGoal; i++) {
                 if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null) {
@@ -167,15 +156,48 @@ public class Player {
         return true;
     }
 
-    public String checkDirection(int xGoal, int yGoal) {
+    /*public boolean horizontalDirectionCheck(int xGoal, int yGoal) {//ofoghi
+        if (this.point.y < yGoal) {//rast
+            for (int i = this.point.y + 1; i <= yGoal; i++) {
+                if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null) {
+                    switch (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName()) {
+                        case "Wall":
+                            return false;
+                        case "Player":
+                            if (Game.getBoardInstance().getBoardElement(this.point.x, i) == p2) {
+                                return yGoal > i; //barrasi rad shodan az player digar
+                            }
+                    }
+                }
+            }
+        }
+        if (this.point.y > yGoal) {//chap
+            for (int i = this.point.y - 1; i >= yGoal; i--) {
+                if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null) {
+                    switch (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName()) {
+                        case "Wall":
+                            return false;
+                        case "Player":
+                            if (Game.getBoardInstance().getBoardElement(this.point.x, i) == p2) {
+                                return yGoal < i; //barrasi rad shodan az player digar
+                            }
+                    }
+                }
+            }
+        }
+        return true;
+    }*/
+
+    public boolean destinationValidator(int xGoal, int yGoal) {
         if (this.point.x == xGoal) {
             //horizontalDirectionCheck(xGoal,yGoal);
-            return "horizontal";
+            return true;
         } else if (this.point.y == yGoal) {
             //verticalDirectionCheck(xGoal,yGoal);
-            return "vertical";
-        } else {
-            return "false";
+            return true;
+        }
+        else {
+            return false;
         }
 
     }
@@ -185,7 +207,7 @@ public class Player {
 
     public void starCounter(int xGoal, int yGoal) {
         if (this.point.x < xGoal) {
-            if (checkDirection(xGoal, yGoal).equals("vertical")) {
+            if (destinationValidator(xGoal, yGoal)) {
                 for (int i = this.point.x + 1; i <= xGoal; i++) {
                     if(Game.getBoardInstance().getBoardElement(i, this.point.y) != null){
                         if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("Star")) {
@@ -208,7 +230,7 @@ public class Player {
             }
         }
         else if ( this.point.x > xGoal ) {
-            if (checkDirection(xGoal,yGoal).equals("vertical")){
+            if (destinationValidator(xGoal,yGoal)){
                 for (int i = this.point.x - 1 ; i >= xGoal ; i--) {
                     if (Game.getBoardInstance().getBoardElement(i, this.point.y) != null){
                         if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("Star")){
@@ -230,7 +252,7 @@ public class Player {
                 }
             }
         }else if (  this.point.y < yGoal ){
-            if( checkDirection(xGoal,yGoal).equals("horizontal") ){
+            if( destinationValidator(xGoal,yGoal) ){
                 for (int i = this.point.y + 1; i <= yGoal; i++) {
                     if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null){
                         if (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName().equals("Star")) {
@@ -253,7 +275,7 @@ public class Player {
             }
         }
         else if (this.point.y > yGoal){
-            if( checkDirection(xGoal,yGoal).equals("horizontal") ){
+            if( destinationValidator(xGoal,yGoal) ){
                 for (int i = this.point.y - 1; i >=  yGoal; i--) {
                     if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null){
                         if (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName().equals("Star")) {
