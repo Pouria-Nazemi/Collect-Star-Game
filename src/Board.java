@@ -28,9 +28,10 @@ public class Board {
         this.Board[x][y] = obj;
     }
 
-    /*public Object[][] getBoard() {
+    public Object[][] getBoard() {
         return Board;
-    }*/
+    }
+
     private Boolean boardDimentionControl(int num){
         return num >= 2;
     }
