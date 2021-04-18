@@ -1,15 +1,20 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
     private static Player p1 = null;
     private static Player p2 = null;
     private int score = 0;
-    private int[] limit;
+    private ArrayList limit = new ArrayList();
     private static boolean turn = true; // bayad joori match beshe ke har harekati anjam shod tabe changeTurn farakhani beshe !
     private Coordinates point;
 
     private Player() {
 
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void addScore() {
@@ -41,7 +46,7 @@ public class Player {
 
     public static void gettingDestinationAndMove() {
         Scanner input = new Scanner(System.in);
-        Player turn = changeTurn() == p1 ? p1 : p2;
+        Player turn = changeTurn();
         String playerTurn = turn == p1 ? "PLAYER 1 " : "PLAYER 2";
         System.out.println(playerTurn + " Enter Destination: ");
         System.out.print("X: ");
@@ -50,20 +55,28 @@ public class Player {
         int YGoal = input.nextInt() - 1;
         String method = turn.checkDirection(XGoal, YGoal);
         if (method.equalsIgnoreCase("horizontal")) {
-            System.out.println(turn.horizontalDirectionCheck(XGoal, YGoal));
-//            turn.starCounter(XGoal,YGoal);
-            turn.Move(XGoal,YGoal);
-            Game.getBoardInstance().showBoard();
-        } else if (method.equalsIgnoreCase("vertical")) {
-            System.out.println(turn.verticalDirectionCheck(XGoal, YGoal));
-//            turn.starCounter(XGoal,YGoal);
-            turn.Move(XGoal,YGoal);
-            Game.getBoardInstance().showBoard();
-        } else {
+            if(turn.horizontalDirectionCheck(XGoal, YGoal)){
+                turn.starCounter(XGoal,YGoal);
+                turn.Move(XGoal,YGoal);
+                Game.getBoardInstance().showBoard();
+            }
+            else{
+                System.out.println("false");
+            }
+        }
+        else if (method.equalsIgnoreCase("vertical")) {
+            if(turn.verticalDirectionCheck(XGoal, YGoal)){
+                turn.starCounter(XGoal,YGoal);
+                turn.Move(XGoal,YGoal);
+                Game.getBoardInstance().showBoard();
+            }
+            else{
+                System.out.println("false");
+            }
+        }
+        else {
             System.out.println("false");
         }
-
-
     }
 
     public static Player changeTurn() {
@@ -72,21 +85,23 @@ public class Player {
             return Player.getP1();
         } else { // false stands for p2 turn
             turn = true;
-            return p2;
+            return Player.getP2();
         }
     }
     public void Move(int xGoal , int yGoal) {
-        Game.getBoardInstance().getBoard()[this.point.x][this.point.y] = null ;
-        Game.getBoardInstance().getBoard()[xGoal][yGoal] = turn ;
+        Game.getBoardInstance().setBoard(null,this.point.x,this.point.y);
+        this.setPointOfPlayer(xGoal,yGoal);
+        Game.getBoardInstance().setBoard(this,xGoal,yGoal);
     }
 
-    public boolean basicValidMoveCheck(int x, int y) {
+   /* public boolean basicValidMoveCheck(int x, int y) {
         if (Game.getBoardInstance().getBoardElement(x, y) == null || Game.getBoardInstance().getBoardElement(x, y).getClass().getName() == "Star") {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
-    }
+    }*/
 
     public boolean verticalDirectionCheck(int xGoal, int yGoal) {//amoodi
         if (this.point.x < xGoal) {//down
@@ -102,15 +117,16 @@ public class Player {
                     }
                 }
             }
-        } else {//up
+        }
+        else {//up
             for (int i = this.point.x - 1; i >= xGoal; i--) {
-                if (Game.getBoardInstance().getBoardElement(i, p1.point.y) != null) {
-                    switch (Game.getBoardInstance().getBoardElement(i, p1.point.y).getClass().getName()) {
+                if (Game.getBoardInstance().getBoardElement(i, this.point.y) != null) {
+                    switch (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName()) {
                         case "Wall":
                             return false;
                         case "Player":
                             if (Game.getBoardInstance().getBoardElement(i, this.point.y) == p2) {
-                                return xGoal > i; //barrasi rad shodan az player digar
+                                return xGoal < i; //barrasi rad shodan az player digar
                             }
                     }
                 }
@@ -171,10 +187,22 @@ public class Player {
         if (this.point.x < xGoal) {
             if (checkDirection(xGoal, yGoal).equals("vertical")) {
                 for (int i = this.point.x + 1; i <= xGoal; i++) {
-                    if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("Star")) {
-                        this.addScore();
-                        Game.getBoardInstance().getBoard()[i][this.point.y] = null ;
-                        Star.count--;
+                    if(Game.getBoardInstance().getBoardElement(i, this.point.y) != null){
+                        if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("Star")) {
+                            this.addScore();
+                            Game.getBoardInstance().setBoard(null,i,this.point.y);
+                            Star.count--;
+                        }
+                        else if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("SpeedLimiter")){
+                            SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(i, this.point.y);
+                            Game.getBoardInstance().setBoard(null,i,this.point.y);
+                            if(this == p1){
+                                p2.limit.add(sl.getLimitingValue());
+                            }
+                            else if(this == p2){
+                                p1.limit.add(sl.getLimitingValue());
+                            }
+                        }
                     }
                 }
             }
@@ -182,31 +210,67 @@ public class Player {
         else if ( this.point.x > xGoal ) {
             if (checkDirection(xGoal,yGoal).equals("vertical")){
                 for (int i = this.point.x - 1 ; i >= xGoal ; i--) {
-                    if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("Star")){
-                        this.addScore();
-                        Game.getBoardInstance().getBoard()[i][this.point.y] = null ;
-                        Star.count--;
+                    if (Game.getBoardInstance().getBoardElement(i, this.point.y) != null){
+                        if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("Star")){
+                            this.addScore();
+                            Game.getBoardInstance().setBoard(null,i,this.point.y);
+                            Star.count--;
+                        }
+                        else if (Game.getBoardInstance().getBoardElement(i, this.point.y).getClass().getName().equals("SpeedLimiter")){
+                            SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(i, this.point.y);
+                            Game.getBoardInstance().setBoard(null,i,this.point.y);
+                            if(this == p1){
+                                p2.limit.add(sl.getLimitingValue());
+                            }
+                            else if(this == p2){
+                                p1.limit.add(sl.getLimitingValue());
+                            }
+                        }
                     }
                 }
             }
         }else if (  this.point.y < yGoal ){
             if( checkDirection(xGoal,yGoal).equals("horizontal") ){
                 for (int i = this.point.y + 1; i <= yGoal; i++) {
-                    if (Game.getBoardInstance().getBoardElement(this.point.y, i).getClass().getName().equals("Star")){
-                        this.addScore() ;
-                        Game.getBoardInstance().getBoard()[this.point.y][i] = null ;
-                        Star.count-- ;
+                    if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null){
+                        if (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName().equals("Star")) {
+                            this.addScore();
+                            Game.getBoardInstance().setBoard(null, this.point.x, i);
+                            Star.count--;
+                        }
+                        else if (Game.getBoardInstance().getBoardElement(this.point.x,i).getClass().getName().equals("SpeedLimiter")){
+                            SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(this.point.x,i);
+                            Game.getBoardInstance().setBoard(null,this.point.x,i);
+                            if(this == p1){
+                                p2.limit.add(sl.getLimitingValue());
+                            }
+                            else if(this == p2){
+                                p1.limit.add(sl.getLimitingValue());
+                            }
+                        }
                     }
                 }
             }
         }
         else if (this.point.y > yGoal){
             if( checkDirection(xGoal,yGoal).equals("horizontal") ){
-                for (int i = this.point.y - 1; i >=  yGoal; i--){
-                    if (Game.getBoardInstance().getBoardElement(this.point.y, i).getClass().getName().equals("Star")){
-                        this.addScore() ;
-                        Game.getBoardInstance().getBoard()[this.point.y][i] = null ;
-                        Star.count-- ;
+                for (int i = this.point.y - 1; i >=  yGoal; i--) {
+                    if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null){
+                        if (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName().equals("Star")) {
+                            this.addScore();
+                            Game.getBoardInstance().setBoard(null, this.point.x, i);
+                            Star.count--;
+                        }
+                        else if (Game.getBoardInstance().getBoardElement(this.point.x,i).getClass().getName().equals("SpeedLimiter")){
+                            SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(this.point.x,i);
+                            Game.getBoardInstance().setBoard(null,this.point.x,i);
+                            if(this == p1){
+                                p2.limit.add(sl.getLimitingValue());
+                            }
+                            else if(this == p2){
+                                p1.limit.add(sl.getLimitingValue());
+                            }
+                        }
                     }
                 }
             }
