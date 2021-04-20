@@ -5,7 +5,7 @@ public class Player {
     private static Player p1 = null;
     private static Player p2 = null;
     private int score = 0;
-    private ArrayList limit = new ArrayList();
+    private ArrayList <Integer> limit = new ArrayList<>();
     private static boolean turn = true; // bayad joori match beshe ke har harekati anjam shod tabe changeTurn farakhani beshe !
     private Coordinates point;
 
@@ -39,6 +39,7 @@ public class Player {
     }
 
     public void updateBoard() {//test
+        //this.limit.add(5);
         //Game.getBoardInstance().setBoard(new Wall(3,1),3,1);
         //Game.getBoardInstance().setBoard(null,3,1);
         //System.out.println(getP1().horizontalDirectionCheck(1,2));
@@ -53,7 +54,7 @@ public class Player {
         int XGoal = input.nextInt() - 1;
         System.out.print("\nY: ");
         int YGoal = input.nextInt() - 1;
-        if (turn.destinationValidator(XGoal, YGoal) && turn.pathCheck(XGoal, YGoal)) {
+        if (turn.destinationValidator(XGoal, YGoal) && turn.pathCheck(XGoal, YGoal) && turn.speedLimiterCheck(XGoal, YGoal)) {
                 turn.starCounter(XGoal, YGoal);
                 turn.Move(XGoal, YGoal);
                 Game.getBoardInstance().showBoard();
@@ -66,7 +67,7 @@ public class Player {
                 XGoal = input.nextInt() - 1;
                 System.out.print("\nY: ");
                 YGoal = input.nextInt() - 1;
-            }while(!turn.destinationValidator(XGoal, YGoal) && turn.pathCheck(XGoal, YGoal));
+            }while(!(turn.destinationValidator(XGoal, YGoal) && turn.pathCheck(XGoal, YGoal) && turn.speedLimiterCheck(XGoal, YGoal)));
             turn.starCounter(XGoal, YGoal);
             turn.Move(XGoal, YGoal);
             Game.getBoardInstance().showBoard();
@@ -82,20 +83,36 @@ public class Player {
         }
     }
     public void Move(int xGoal , int yGoal) {
+       if(this.limit.size() != 0) {
+           this.limit.remove(0);
+       }
         Game.getBoardInstance().setBoard(null,this.point.x,this.point.y);
         this.setPointOfPlayer(xGoal,yGoal);
         Game.getBoardInstance().setBoard(this,xGoal,yGoal);
     }
 
-   /* public boolean basicValidMoveCheck(int x, int y) {
-        if (Game.getBoardInstance().getBoardElement(x, y) == null || Game.getBoardInstance().getBoardElement(x, y).getClass().getName() == "Star") {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }*/
-
+   public boolean speedLimiterCheck(int xGoal, int yGoal){
+       if(this.limit.size()!= 0) {
+           int limit = this.limit.get(0);
+           if (xGoal == this.point.x) {
+               if(Math.abs(yGoal - this.point.y) <= limit){
+                   return true;
+               }
+               else{
+                   return false;
+               }
+           }
+           else if (yGoal == this.point.y) {
+               if(Math.abs(xGoal - this.point.x) <= limit){
+                   return true;
+               }
+               else{
+                   return false;
+               }
+           }
+       }
+       return true;
+   }
     public boolean pathCheck(int xGoal, int yGoal) {//amoodi
         if (this.point.x < xGoal) {//down
             for (int i = this.point.x + 1; i <= xGoal; i++) {
@@ -155,39 +172,6 @@ public class Player {
         }
         return true;
     }
-
-    /*public boolean horizontalDirectionCheck(int xGoal, int yGoal) {//ofoghi
-        if (this.point.y < yGoal) {//rast
-            for (int i = this.point.y + 1; i <= yGoal; i++) {
-                if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null) {
-                    switch (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName()) {
-                        case "Wall":
-                            return false;
-                        case "Player":
-                            if (Game.getBoardInstance().getBoardElement(this.point.x, i) == p2) {
-                                return yGoal > i; //barrasi rad shodan az player digar
-                            }
-                    }
-                }
-            }
-        }
-        if (this.point.y > yGoal) {//chap
-            for (int i = this.point.y - 1; i >= yGoal; i--) {
-                if (Game.getBoardInstance().getBoardElement(this.point.x, i) != null) {
-                    switch (Game.getBoardInstance().getBoardElement(this.point.x, i).getClass().getName()) {
-                        case "Wall":
-                            return false;
-                        case "Player":
-                            if (Game.getBoardInstance().getBoardElement(this.point.x, i) == p2) {
-                                return yGoal < i; //barrasi rad shodan az player digar
-                            }
-                    }
-                }
-            }
-        }
-        return true;
-    }*/
-
     public boolean destinationValidator(int xGoal, int yGoal) {
         if (this.point.x == xGoal) {
             //horizontalDirectionCheck(xGoal,yGoal);
