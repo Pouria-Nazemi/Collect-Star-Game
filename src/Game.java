@@ -1,5 +1,6 @@
 public class Game {
     public static Board board;
+    public static Player player;
 
     public static void setBoard(Board board) {
         Game.board = board;
@@ -7,6 +8,10 @@ public class Game {
 
     public static Board getBoardInstance() {
         return board;
+    }
+
+    public static Player getPlayer() {
+        return player;
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,3 @@
-
 public class SpeedLimiter {
     private Coordinates point;
     private int limitingValue;
