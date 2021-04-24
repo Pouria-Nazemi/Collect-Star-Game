@@ -1,72 +1,43 @@
 public class GameController {
 
-    public boolean pathCheck(int xGoal, int yGoal , Player turn ) {//amoodi
-        if (turn.getPointOfPlayer().x < xGoal) {//down
-            if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
-                if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
-                    return false;
-                }
+    public boolean pathCheck(int xGoal, int yGoal , Player turn ) {
+        if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
+            if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
+                return false;
             }
+        }
+        if (turn.getPointOfPlayer().x < xGoal) {//down
             for (int i = turn.getPointOfPlayer().x + 1; i <= xGoal; i++) {
                 if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y) != null) {
-                    if(Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")){
+                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName())) {
                         return false;
-                    }
-                    switch (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName()) {
-                        case "Wall":
-                            return false;
                     }
                 }
             }
         }
         else {//up
-            if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
-                if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
-                    return false;
-                }
-            }
-            for (int i = turn.getPointOfPlayer().x - 1; i >= xGoal; i--) {
-                if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
-                    if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
-                        return false;
-                    }
-                }
+            for (int i = turn.getPointOfPlayer().x - 1; i >= xGoal; i--) {//up
                 if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y) != null) {
-
-                    switch (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName()) {
-                        case "Wall":
-                            return false;
+                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName())) {
+                        return false;
                     }
                 }
             }
         }
         if (turn.getPointOfPlayer().y < yGoal) {//rast
-            if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
-                if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
-                    return false;
-                }
-            }
             for (int i = turn.getPointOfPlayer().y+ 1; i <= yGoal; i++) {
                 if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i) != null) {
-                    switch (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName()) {
-                        case "Wall":
-                            return false;
+                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName())) {
+                        return false;
                     }
                 }
             }
         }
         if (turn.getPointOfPlayer().y > yGoal) {//chap
-            if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
-                if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
-                    return false;
-                }
-            }
             for (int i = turn.getPointOfPlayer().y - 1; i >= yGoal; i--) {
                 if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i) != null) {
-
-                    switch (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName()) {
-                        case "Wall":
-                            return false;
+                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName())) {
+                        return false;
                     }
                 }
             }
@@ -202,6 +173,4 @@ public class GameController {
         }
         return true;
     }
-
-
 }
