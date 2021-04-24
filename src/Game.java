@@ -1,6 +1,6 @@
 public class Game {
     public static Board board;
-    public static Player player;
+    /*public static Player player;*/
 
     public static void setBoard(Board board) {
         Game.board = board;
@@ -10,16 +10,16 @@ public class Game {
         return board;
     }
 
-    public static Player getPlayer() {
+    /*public static Player getPlayer() {
         return player;
-    }
+    }*/
 
     public static void main(String[] args) {
         Board board = new Board();
         setBoard(board);
         Player p1 = Player.getP1();
         Player p2 = Player.getP2();
-        p1.updateBoard();
+        //p1.updateBoard();
         board.showBoard();
         while(Star.count>0){
             Player.gettingDestinationAndMove();
@@ -34,7 +34,7 @@ public class Game {
             System.out.println("Score: " + p2.getScore());
         }
         else {
-            System.out.println("Mosavi");
+            System.out.println("Draw");
             System.out.println("Score: " + p1.getScore());
         }
     }

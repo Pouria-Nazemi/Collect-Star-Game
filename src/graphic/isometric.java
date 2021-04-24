@@ -11,8 +11,8 @@ public class isometric {
     static JFrame f;
     public static final int TILE_WIDTH=96;
     public static final int TILE_HEIGHT=50;
-    public static int Cols=5;
-    public static int Rows=5;
+    public static int Cols=8;
+    public static int Rows=8;
     isometric(){
         f=new JFrame();
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

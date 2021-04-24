@@ -6,24 +6,24 @@ public class Player {
     private static Player p2 = null;
     private int score = 0;
     private ArrayList <Integer> limit = new ArrayList<>();
-    private static boolean turn = true; // bayad joori match beshe ke har harekati anjam shod tabe changeTurn farakhani beshe !
+    private static boolean turn = true;
     private Coordinates point;
 
     public ArrayList<Integer> getLimit() {
         return limit;
     }
 
-    public Coordinates getPoint() {
+    public Coordinates getPointOfPlayer() {
         return point;
     }
 
-    public Player getPl1(){
+    /*public Player getPl1(){
         return p1 ;
     }
 
     public Player getPl2(){
         return p2;
-    }
+    }*/
 
     private Player() {
 
@@ -54,12 +54,12 @@ public class Player {
         return p2;
     }
 
-    public void updateBoard() {//test
+    /*public void updateBoard() {//test
         //this.limit.add(5);
         //Game.getBoardInstance().setBoard(new Wall(3,1),3,1);
         //Game.getBoardInstance().setBoard(null,3,1);
         //System.out.println(getP1().horizontalDirectionCheck(1,2));
-    }
+    }*/
 
     public static void gettingDestinationAndMove() {
         Scanner input = new Scanner(System.in);
@@ -73,7 +73,7 @@ public class Player {
         int YGoal = input.nextInt() - 1;
         if (gameController.destinationValidator(XGoal, YGoal , turn ) && gameController.pathCheck(XGoal, YGoal , turn) && gameController.speedLimiterCheck(XGoal, YGoal , turn )) {
                 gameController.starCounter(XGoal, YGoal , turn);
-                gameController.Move(XGoal, YGoal , turn);
+                turn.Move(XGoal, YGoal);
                 Game.getBoardInstance().showBoard();
         }
         else{
@@ -86,9 +86,18 @@ public class Player {
                 YGoal = input.nextInt() - 1;
             }while(!(gameController.destinationValidator(XGoal, YGoal,turn) && gameController.pathCheck(XGoal, YGoal , turn) && gameController.speedLimiterCheck(XGoal, YGoal , turn)));
             gameController.starCounter(XGoal, YGoal , turn);
-            gameController.Move(XGoal, YGoal , turn);
+            turn.Move(XGoal, YGoal);
             Game.getBoardInstance().showBoard();
         }
+    }
+
+    public void Move(int xGoal , int yGoal) {
+        if(this.getLimit().size() != 0) {
+            this.getLimit().remove(0);
+        }
+        Game.getBoardInstance().setBoard(null,this.getPointOfPlayer().x,this.getPointOfPlayer().y);
+        this.setPointOfPlayer(xGoal,yGoal);
+        Game.getBoardInstance().setBoard(this,xGoal,yGoal);
     }
     public static Player changeTurn() {
         if (turn) { // true stands for p1 turn
@@ -99,7 +108,4 @@ public class Player {
             return Player.getP2();
         }
     }
-
-    // ghabl az farakhani in tabe bayad do se ta tabe ghabl "true" bashan ta badesh in ejra she .
-
 }

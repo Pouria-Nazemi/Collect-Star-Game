@@ -32,23 +32,21 @@ public class Board {
         return Board;
     }*/
 
-    private Boolean boardDimentionControl(int num){
-        return num >= 2;
-    }
+
 
     private void gamePreparation(){
-        System.out.println("Enter the dimention of the board of the game ");
+        System.out.println("Enter the dimension of the board of the game ");
         Scanner input = new Scanner(System.in);
         System.out.print("Width: ");
         int width = input.nextInt();
-        while(!boardDimentionControl(width)){
+        while(width<2){
             System.out.print("Enter a positive number larger than 1: ");
             width = input.nextInt();
         }
         this.setWidth(width);
         System.out.print("\nHeight: ");
         int height = input.nextInt();
-        while(!boardDimentionControl(height)){
+        while(height<2){
             System.out.print("Enter a positive number larger than 1: ");
             height = input.nextInt();
         }
@@ -78,9 +76,6 @@ public class Board {
                     System.out.print("Enter the valueOfLimit: ");
                     int valueOfLimit = input.nextInt();
                     this.setBoard(new SpeedLimiter(X,Y,valueOfLimit),X,Y);
-                    break;
-                }
-                case 0: {
                     break;
                 }
                 default:{
@@ -147,7 +142,6 @@ public class Board {
                 }
             }
             System.out.println();
-  
         }
     }
 

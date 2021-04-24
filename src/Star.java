@@ -7,5 +7,4 @@ public class Star {
         this.point = new Coordinates(x,y);
         count++;
     }
-    
 }
