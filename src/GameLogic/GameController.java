@@ -1,15 +1,17 @@
+package GameLogic;
+
 public class GameController {
 
     public boolean pathCheck(int xGoal, int yGoal , Player turn ) {
         if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
-            if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("Player")) {
+            if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("GameLogic.Player")) {
                 return false;
             }
         }
         if (turn.getPointOfPlayer().x < xGoal) {//down
             for (int i = turn.getPointOfPlayer().x + 1; i <= xGoal; i++) {
                 if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y) != null) {
-                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName())) {
+                    if ("GameLogic.Wall".equals(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName())) {
                         return false;
                     }
                 }
@@ -18,7 +20,7 @@ public class GameController {
         else {//up
             for (int i = turn.getPointOfPlayer().x - 1; i >= xGoal; i--) {//up
                 if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y) != null) {
-                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName())) {
+                    if ("GameLogic.Wall".equals(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName())) {
                         return false;
                     }
                 }
@@ -27,7 +29,7 @@ public class GameController {
         if (turn.getPointOfPlayer().y < yGoal) {//rast
             for (int i = turn.getPointOfPlayer().y+ 1; i <= yGoal; i++) {
                 if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i) != null) {
-                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName())) {
+                    if ("GameLogic.Wall".equals(Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName())) {
                         return false;
                     }
                 }
@@ -36,7 +38,7 @@ public class GameController {
         if (turn.getPointOfPlayer().y > yGoal) {//chap
             for (int i = turn.getPointOfPlayer().y - 1; i >= yGoal; i--) {
                 if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i) != null) {
-                    if ("Wall".equals(Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName())) {
+                    if ("GameLogic.Wall".equals(Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName())) {
                         return false;
                     }
                 }
@@ -63,12 +65,12 @@ public class GameController {
             if (destinationValidator(xGoal, yGoal  , turn  )) {
                 for (int i = turn.getPointOfPlayer().x + 1; i <= xGoal; i++) {
                     if(Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y) != null){
-                        if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("Star")) {
+                        if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.Star")) {
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null,i,turn.getPointOfPlayer().y);
                             Star.count--;
                         }
-                        else if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("SpeedLimiter")){
+                        else if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y);
                             Game.getBoardInstance().setBoard(null,i,turn.getPointOfPlayer().y);
                             if(turn == Player.getP1()){
@@ -86,12 +88,12 @@ public class GameController {
             if (destinationValidator(xGoal,yGoal , turn)){
                 for (int i = turn.getPointOfPlayer().x - 1; i >= xGoal ; i--) {
                     if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y) != null){
-                        if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("Star")){
+                        if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.Star")){
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null,i,turn.getPointOfPlayer().y);
                             Star.count--;
                         }
-                        else if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("SpeedLimiter")){
+                        else if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y);
                             Game.getBoardInstance().setBoard(null,i,turn.getPointOfPlayer().y);
                             if(turn == Player.getP1()){
@@ -108,12 +110,12 @@ public class GameController {
             if( destinationValidator(xGoal,yGoal , turn) ){
                 for (int i = turn.getPointOfPlayer().y + 1; i <= yGoal; i++) {
                     if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i) != null){
-                        if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName().equals("Star")) {
+                        if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName().equals("GameLogic.Star")) {
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null, turn.getPointOfPlayer().x, i);
                             Star.count--;
                         }
-                        else if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i).getClass().getName().equals("SpeedLimiter")){
+                        else if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i);
                             Game.getBoardInstance().setBoard(null,turn.getPointOfPlayer().x,i);
                             if(turn == Player.getP1()){
@@ -131,12 +133,12 @@ public class GameController {
             if( destinationValidator(xGoal,yGoal , turn) ){
                 for (int i = turn.getPointOfPlayer().y - 1; i >=  yGoal; i--) {
                     if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i) != null){
-                        if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName().equals("Star")) {
+                        if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName().equals("GameLogic.Star")) {
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null, turn.getPointOfPlayer().x, i);
                             Star.count--;
                         }
-                        else if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i).getClass().getName().equals("SpeedLimiter")){
+                        else if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i);
                             Game.getBoardInstance().setBoard(null,turn.getPointOfPlayer().x,i);
                             if(turn == Player.getP1()){

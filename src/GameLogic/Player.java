@@ -1,3 +1,5 @@
+package GameLogic;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,11 +19,11 @@ public class Player {
         return point;
     }
 
-    /*public Player getPl1(){
+    /*public GameLogic.Player getPl1(){
         return p1 ;
     }
 
-    public Player getPl2(){
+    public GameLogic.Player getPl2(){
         return p2;
     }*/
 
@@ -56,8 +58,8 @@ public class Player {
 
     /*public void updateBoard() {//test
         //this.limit.add(5);
-        //Game.getBoardInstance().setBoard(new Wall(3,1),3,1);
-        //Game.getBoardInstance().setBoard(null,3,1);
+        //GameLogic.Game.getBoardInstance().setBoard(new GameLogic.Wall(3,1),3,1);
+        //GameLogic.Game.getBoardInstance().setBoard(null,3,1);
         //System.out.println(getP1().horizontalDirectionCheck(1,2));
     }*/
 

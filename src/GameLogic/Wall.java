@@ -1,3 +1,4 @@
+package GameLogic;
 
 public class Wall {
     private Coordinates point;

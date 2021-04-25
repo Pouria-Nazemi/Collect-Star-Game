@@ -1,6 +1,8 @@
+package GameLogic;
+
 public class Game {
     public static Board board;
-    /*public static Player player;*/
+    /*public static GameLogic.Player player;*/
 
     public static void setBoard(Board board) {
         Game.board = board;
@@ -10,7 +12,7 @@ public class Game {
         return board;
     }
 
-    /*public static Player getPlayer() {
+    /*public static GameLogic.Player getPlayer() {
         return player;
     }*/
 
@@ -25,12 +27,12 @@ public class Game {
             Player.gettingDestinationAndMove();
         }
         if(p1.getScore() > p2.getScore()){
-            System.out.println("Player 1 Win");
+            System.out.println("GameLogic.Player 1 Win");
             System.out.println("Score: " + p1.getScore());
         }
         else if(p1.getScore() < p2.getScore()){
 
-            System.out.println("Player 2 Win");
+            System.out.println("GameLogic.Player 2 Win");
             System.out.println("Score: " + p2.getScore());
         }
         else {

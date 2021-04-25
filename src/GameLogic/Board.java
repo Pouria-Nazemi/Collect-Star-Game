@@ -1,3 +1,5 @@
+package GameLogic;
+
 import java.util.Scanner;
 
 public class Board {
@@ -29,7 +31,7 @@ public class Board {
     }
 
    /* public Object[][] getBoard() {
-        return Board;
+        return GameLogic.Board;
     }*/
 
 
@@ -54,7 +56,7 @@ public class Board {
         this.Board = new Object[height][width];
         System.out.println("Adding objects of the game");
         System.out.println("Choose the object that you want to create when finished type 0 ");
-        System.out.println("\t 1.Wall\n\t 2.Star\n\t 3.SpeedLimiter\n\t 0.Finish");
+        System.out.println("\t 1.GameLogic.Wall\n\t 2.GameLogic.Star\n\t 3.GameLogic.SpeedLimiter\n\t 0.Finish");
         int objectCreator = input.nextInt();
         int X,Y;
         while(objectCreator != 0){
@@ -83,10 +85,10 @@ public class Board {
                 }
             }
             System.out.println("Choose the object that you want to create when finished type 0 ");
-            System.out.println("\t 1.Wall\n\t 2.Star\n\t 3.SpeedLimiter\n\t 0.Finish");
+            System.out.println("\t 1.GameLogic.Wall\n\t 2.GameLogic.Star\n\t 3.GameLogic.SpeedLimiter\n\t 0.Finish");
             objectCreator = input.nextInt();  
         }
-        System.out.println("Enter the position of the Player 1: ");
+        System.out.println("Enter the position of the GameLogic.Player 1: ");
         System.out.print("X: ");
         X = input.nextInt()-1;
         System.out.print("\nY: ");
@@ -94,7 +96,7 @@ public class Board {
         Player.getP1().setPointOfPlayer(X,Y);
         this.setBoard(Player.getP1(),X,Y);
 
-        System.out.println("Enter the position of the Player 2: ");
+        System.out.println("Enter the position of the GameLogic.Player 2: ");
         System.out.print("X: ");
         X = input.nextInt()-1;
         System.out.print("\nY: ");
@@ -113,17 +115,17 @@ public class Board {
                 if(Board[row][col]!=null){
                     System.out.print("|");
                     switch (Board[row][col].getClass().getName()) {
-                        case "Star":
+                        case "GameLogic.Star":
                             System.out.print("S");
                             break;
-                        case "Wall":
+                        case "GameLogic.Wall":
                             System.out.print("W");
                             break;
-                        case "SpeedLimiter":
+                        case "GameLogic.SpeedLimiter":
                             SpeedLimiter sl = (SpeedLimiter) Board[row][col];
                             System.out.print(sl.getLimitingValue());
                             break;
-                        case "Player":
+                        case "GameLogic.Player":
                             if(Board[row][col].equals(Player.getP1())) {
                                 System.out.print("#");
                             }
