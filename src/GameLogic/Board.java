@@ -8,7 +8,10 @@ public class Board {
     private Object[][] Board;
 
     public Board() {
-        gamePreparation();
+       // gamePreparation();
+    }
+    public Board(int width,int height){
+      this.Board=new Object[height][width];
     }
 
     public void setWidth(int width) {
