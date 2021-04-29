@@ -9,6 +9,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -16,10 +17,12 @@ import java.io.IOException;
 
 public class isometric {
     static JFrame frame;
+    static JLayeredPane layeredPane;
     static String selected="";
     static final int TILE_WIDTH=96;
     static final int TILE_HEIGHT=50;
-    static int fasele=30;
+    static int faseleAmoodi =30;
+    static int faseleOfoghi;
     static int Cols=5;
     static int Rows=5;
     static Image TILE_IMAGE;
@@ -33,13 +36,13 @@ public class isometric {
     public isometric(){
         frame =new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
+      //  frame.setLayout(new BorderLayout());
         frame.setLocation(400,150);
 
 
-        TILE_IMAGE= new ImageIcon(getClass().getResource("image/ISOgrass2.png")).getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT,Image.SCALE_DEFAULT);
-        SElECTED_IMAGE= new ImageIcon(getClass().getResource("image/selected-grass.png")).getImage().getScaledInstance(TILE_WIDTH, TILE_HEIGHT,Image.SCALE_DEFAULT);
-        WALL_IMAGE= new ImageIcon(getClass().getResource("image/wall.png")).getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT+8,Image.SCALE_DEFAULT);
+        TILE_IMAGE= new ImageIcon(getClass().getResource("image/ISOgrass2.png")).getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT,Image.SCALE_SMOOTH);
+        SElECTED_IMAGE= new ImageIcon(getClass().getResource("image/selected-grass.png")).getImage().getScaledInstance(TILE_WIDTH, TILE_HEIGHT,Image.SCALE_SMOOTH);
+        WALL_IMAGE= new ImageIcon(getClass().getResource("image/wall.png")).getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT+8,Image.SCALE_SMOOTH);
         try {
             PLAYER1_IMAGE= ImageIO.read(getClass().getResource("image/p1.png")); // bejaye getClass mishe inam zad: .read(new File(("src/graphic/image/p1.png")))
             PLAYER2_IMAGE= ImageIO.read(getClass().getResource("image/p2.png"));
@@ -65,10 +68,27 @@ public class isometric {
         Rows = Integer.parseInt(xField.getText());
         Cols = Integer.parseInt(yField.getText());
         Game.setBoard(new Board(Cols, Rows));
+        faseleOfoghi= Rows*(TILE_HEIGHT-1);
 
-        JPanel jp=new JPanel();
-        jp.setBackground(new Color(151, 177, 28));
-       /* JPanel jp= new JPanel() {
+        layeredPane= new JLayeredPane();
+      //  layeredPane.setBackground(new Color(151, 177, 28));
+        //layeredPane.setOpaque(true);
+        int scrollHeight= ((Rows+Cols)*(TILE_HEIGHT )/2) +faseleAmoodi;
+        int scrollWidth=faseleOfoghi +Cols * (TILE_HEIGHT )+80;
+        Image BACKGROUND_IMAGE=new ImageIcon("src/graphic/image/background.jpg").getImage().getScaledInstance(scrollWidth+500,scrollHeight+400,Image.SCALE_SMOOTH);
+        JLabel background = new JLabel(new ImageIcon(BACKGROUND_IMAGE));
+        background.setBounds(0,0,scrollWidth+500,scrollHeight+400);
+        layeredPane.add(background,new Integer(0));
+
+        layeredPane.setLayout(null);
+        JScrollPane jsp= new JScrollPane(layeredPane);
+        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        layeredPane.setPreferredSize(new Dimension(scrollWidth,scrollHeight));
+
+
+       /* layeredPane= new JLayeredPane() {
 
             @Override
             public void paintComponent(Graphics g) {
@@ -78,39 +98,32 @@ public class isometric {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                g.drawImage(backgroundImage, 0, 0, null);
-            }};
-*/
+                   Graphics2D g2d = (Graphics2D) g;
+                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON); // baraye bala bordan keyfiat
 
-        jp.setLayout(null);
-        JScrollPane jsp= new JScrollPane(jp); // scroll khastam bezaram vali bug dare
-        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-       // jsp.add(jsp.createHorizontalScrollBar());
-        //jsp.setAutoscrolls(true);
-        jp.setPreferredSize(new Dimension(300,300));
-
+                g2d.drawImage(backgroundImage, 0, 0, null);
+            }
+        };*/
 
 
         frame.getContentPane().add(jsp,BorderLayout.CENTER);
         Icon imgIcon = new ImageIcon(TILE_IMAGE);
-        Icon wallIcon = new ImageIcon(WALL_IMAGE);
 
         for (int i = 0; i <Rows ; i++) {
             for (int j = 0; j < Cols; j++) {
                 int isoX,isoY;
                 JLabel label;
 
-                int cartX = j * (TILE_HEIGHT - 1);
-                int cartY = i * (TILE_HEIGHT - 1);
+                int cartX = j * (TILE_HEIGHT );
+                int cartY = i * (TILE_HEIGHT );
                 isoX = (cartX - cartY);
                 isoY = (cartX + cartY) / 2;
                 label = new JLabel(imgIcon);
-                label.setBounds(((Cols-1)*TILE_HEIGHT +isoX +fasele),isoY+fasele, TILE_WIDTH, TILE_HEIGHT); // (x,y,tool,ertefa)
+                label.setBounds((faseleOfoghi +isoX ),isoY+ faseleAmoodi, TILE_WIDTH, TILE_HEIGHT); // (x,y,tool,ertefa)
 
                 label.addMouseListener(new TileListener(i,j));
 
-                jp.add(label);
+                layeredPane.add(label,new Integer(1));
             }
         }
 
@@ -119,17 +132,17 @@ public class isometric {
 
         menu.setBackground(new Color(0, 48, 0));
 
-        frame.getContentPane().add(menu,BorderLayout.EAST);
+        frame.getContentPane().add(menu,BorderLayout.EAST,1);
 
-        int buttonsWidth=60-2 ;
+        int buttonsWidth=58;
         int buttonsHeight=60 ;
-        JButton wallButton =CreateButton("دیوار",new ImageIcon(WALL_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight,Image.SCALE_DEFAULT)),"wall");
+        JButton wallButton =CreateButton("دیوار",new ImageIcon(WALL_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight,Image.SCALE_SMOOTH)),"wall");
         menu.add(wallButton);
         Icon starIcon=new ImageIcon(STAR_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight,Image.SCALE_DEFAULT));
         menu.add(CreateButton("ستاره",starIcon,"star"));
         menu.add(CreateButton("سرعتگیر",new ImageIcon(SPEEDLIMITER_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight,Image.SCALE_DEFAULT)),"speedlimiter"));
-        menu.add(CreateButton("بازیکن 1",new ImageIcon(PLAYER1_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight+10,Image.SCALE_DEFAULT)),"p1")); //heseh nabood felan icon ro null gozashtam movaghat
-        menu.add(CreateButton("بازیکن 2",new ImageIcon(PLAYER2_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight+10,Image.SCALE_DEFAULT)),"p2"));
+        menu.add(CreateButton("بازیکن 1",new ImageIcon(PLAYER1_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight+10,Image.SCALE_SMOOTH)),"p1"));
+        menu.add(CreateButton("بازیکن 2",new ImageIcon(PLAYER2_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight+10,Image.SCALE_SMOOTH)),"p2"));
 
 
 
@@ -158,13 +171,15 @@ public class isometric {
         button.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                selected=nameEn;
-                for (Component component : e.getComponent().getParent().getComponents()) {
-                    component.setBackground(Color.white);
-                    component.setForeground(Color.black);
+                if(e.getComponent().isEnabled()) {
+                    selected = nameEn;
+                    for (Component component : e.getComponent().getParent().getComponents()) {
+                        component.setBackground(Color.white);
+                        component.setForeground(Color.black);
+                    }
+                    e.getComponent().setBackground(Color.blue);
+                    e.getComponent().setForeground(Color.white); // rang matn
                 }
-                e.getComponent().setBackground(Color.blue);
-                e.getComponent().setForeground(Color.white); // rang matn
             }
 
             @Override
@@ -193,87 +208,84 @@ public class isometric {
         drawItem(i,j,type,-1);
     }
     public static void drawItem(int i,int j,String type,int limit){
-        int cartX = j * (TILE_HEIGHT - 1);
-        int cartY = i * (TILE_HEIGHT - 1);
+        int cartX = j * (TILE_HEIGHT );
+        int cartY = i * (TILE_HEIGHT );
         int isoX = (cartX - cartY);
         int isoY = (cartX + cartY) / 2;
 
-        Image player1=  PLAYER1_IMAGE.getScaledInstance(36,50,Image.SCALE_DEFAULT);
-        Image player2 = PLAYER2_IMAGE.getScaledInstance(36, 50, Image.SCALE_DEFAULT);
-        Image wall = WALL_IMAGE.getScaledInstance(TILE_WIDTH, TILE_HEIGHT + 8, Image.SCALE_DEFAULT);
+        Image player1=  PLAYER1_IMAGE.getScaledInstance(36,50,Image.SCALE_SMOOTH);
+        Image player2 = PLAYER2_IMAGE.getScaledInstance(36, 50, Image.SCALE_SMOOTH);
+        Image wall = WALL_IMAGE.getScaledInstance(TILE_WIDTH, TILE_HEIGHT + 8, Image.SCALE_SMOOTH);
         Image star = STAR_IMAGE.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
         Image speedlimiter = SPEEDLIMITER_IMAGE.getScaledInstance(60, 68, Image.SCALE_DEFAULT);
         JLabel item;
-        int z; // ino kar nadashte bashid alakiye
+        Container container=isometric.frame.getContentPane();
+        JPanel menu= (JPanel) container.getComponent(1);
+        int layer;
         switch (type){
             case "star":
                 item=new JLabel(new ImageIcon(star));
-                item.setBounds(((Cols-1)*TILE_HEIGHT +isoX +fasele),isoY-13 +fasele, TILE_WIDTH, TILE_HEIGHT);
-                z=300;
+                item.setBounds((faseleOfoghi +isoX ),isoY-13 + faseleAmoodi, TILE_WIDTH, TILE_HEIGHT);
+                layer=3;
                 break;
             case "speedlimiter":
                 item=new JLabel(new ImageIcon(speedlimiter));
                 item.setVerticalTextPosition(SwingConstants.TOP);
                 item.setToolTipText(""+limit);
                 ToolTipManager.sharedInstance().setInitialDelay(50);
-                item.setBounds(((Cols-1)*TILE_HEIGHT +isoX +fasele),isoY-27+fasele, TILE_WIDTH, TILE_HEIGHT+12);
-                z=400;
+                item.setBounds((faseleOfoghi +isoX ),isoY-27+ faseleAmoodi, TILE_WIDTH, TILE_HEIGHT+12);
+                layer=4;
                 break;
             case "p1":
                 item=new JLabel(new ImageIcon(player1));
-                item.setBounds(((Cols-1)*TILE_HEIGHT +isoX +fasele),isoY-13 +fasele, TILE_WIDTH, TILE_HEIGHT);
-                z=600;
+                item.setBounds((faseleOfoghi +isoX ),isoY-13 + faseleAmoodi, TILE_WIDTH, TILE_HEIGHT);
+                item.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        //super.mouseClicked(e);
+                        Component playerButton=menu.getComponent(3);
+                        playerButton.setEnabled(true);
+                    }
+                });
+                layer=6;
                 break;
             case "p2":
                 item=new JLabel(new ImageIcon(player2));
-                item.setBounds(((Cols-1)*TILE_HEIGHT +isoX +fasele),isoY-13+fasele, TILE_WIDTH, TILE_HEIGHT);
-                z=500;
+                item.setBounds((faseleOfoghi +isoX ),isoY-13+ faseleAmoodi, TILE_WIDTH, TILE_HEIGHT);
+                item.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                       // super.mouseClicked(e);
+                        Component playerButton=menu.getComponent(4);
+                        playerButton.setEnabled(true);
+
+                    }
+                });
+                layer=5;
                 break;
             case "wall":
                 item=new JLabel(new ImageIcon(wall));
-                item.setBounds(((Cols-1)*TILE_HEIGHT +isoX +fasele),isoY-8+fasele, TILE_WIDTH, TILE_HEIGHT+8);
-                z=100;
+                item.setBounds((faseleOfoghi +isoX ),isoY-8+ faseleAmoodi, TILE_WIDTH, TILE_HEIGHT+8);
+                layer=2;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
 
-        item.addMouseListener(new MouseListener() {
+        item.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //e.getComponent().setVisible(false);
-                isometric.frame.getLayeredPane().remove(e.getComponent());
-                isometric.frame.getLayeredPane().repaint();
+                isometric.layeredPane.remove(e.getComponent());
+                isometric.layeredPane.repaint();
                 Game.getBoardInstance().setBoard(null,i,j);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
 
-        // z=(Cols-j)+z;
-        frame.getLayeredPane().add(item);
-    //    System.out.println("index="+(z));
 
-        // frame.getLayeredPane().setLayer(item,z);
-        frame.getLayeredPane().moveToFront(item);
+        layeredPane.add(item, layer,Cols-j-1);
+
+       // layeredPane.moveToFront(item);
 
     }
 
@@ -293,6 +305,8 @@ class TileListener implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         System.out.printf("Clicked :(%d,%d)\n", i, j);
         Board board=Game.getBoardInstance();
+        Container container=isometric.frame.getContentPane();
+        JPanel menu= (JPanel) container.getComponent(1);
         if(board.getBoardElement(i,j)==null) {
             switch (isometric.selected) {
                 case "wall":
@@ -319,12 +333,20 @@ class TileListener implements MouseListener{
                     isometric.drawItem(i, j, "p1");
                     Player.getP1().setPointOfPlayer(i,j);
                     board.setBoard(Player.getP1(),i,j);
+                    JButton button= (JButton) menu.getComponent(3);
+                    button.setBackground(Color.white);
+                    button.setEnabled(false);
+                    isometric.selected="";
                     break;
 
                 case "p2":
                     isometric.drawItem(i, j, "p2");
                     Player.getP2().setPointOfPlayer(i,j);
                     board.setBoard(Player.getP2(),i,j);
+                    button= (JButton) menu.getComponent(4);
+                    button.setBackground(Color.white);
+                    button.setEnabled(false);
+                    isometric.selected="";
                     break;
             }
         }
@@ -350,6 +372,6 @@ class TileListener implements MouseListener{
     public void mouseExited(MouseEvent e) {
         Icon imgIcon = new ImageIcon(isometric.TILE_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
-        isometric.frame.getLayeredPane().moveToBack(e.getComponent());
+      //  isometric.layeredPane.moveToBack(e.getComponent());
     }
 }
