@@ -24,11 +24,11 @@ public class Loading {
         loadFrame.setLayout(null);
         loadFrame.setVisible(true);
 
-        try {
-            Thread.sleep(4500);
-        }
-        catch (InterruptedException e) {
-        }
-        loadFrame.setVisible(false);
+        Timer timer = new Timer(4500, e -> {
+            loadFrame.setVisible(false);
+            new isometric();
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 }

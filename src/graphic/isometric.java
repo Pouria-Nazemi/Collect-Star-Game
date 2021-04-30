@@ -34,7 +34,6 @@ public class isometric {
     static Image PLAYER2_IMAGE;
 
     public isometric(){
-        new Loading();
         frame =new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       //  frame.setLayout(new BorderLayout());
@@ -291,8 +290,8 @@ public class isometric {
     }
 
     public static void main(String[] args) {
-        //new GameMainMenu();
-        new isometric();
+        new GameMainMenu();
+        //new isometric();
     }
 }
 

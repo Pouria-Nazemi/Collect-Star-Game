@@ -40,8 +40,8 @@ public class GameMainMenu implements MouseListener {
         aboutJB.addMouseListener(this);
         //adding action listener later
 
-        menuJP.add(aboutJB);
-        menuJP.add(startJB);
+        menuJP.add(startJB,0);
+        menuJP.add(aboutJB,1);
         menuJP.setLayout(null);
         menuJP.setBounds(0,0,800,500);
 
@@ -57,7 +57,8 @@ public class GameMainMenu implements MouseListener {
 
         if(e.getSource()==startJB){
             menuFrame.setVisible(false);
-            new isometric();
+           // new isometric();
+            new Loading();
         }
         if(e.getSource()==aboutJB){
             //baedan add shavad
