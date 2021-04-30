@@ -153,6 +153,9 @@ public class GameController {
             }
         }
     }
+    public boolean boardDimensionValidator(int width,int height){
+        return width>=2 && height>=2 ;
+    }
     public boolean speedLimiterCheck(int xGoal, int yGoal , Player turn ){
         if(turn.getLimit().size()!= 0) {
             int limit = turn.getLimit().get(0);

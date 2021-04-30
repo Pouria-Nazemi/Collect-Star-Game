@@ -11,9 +11,9 @@ public class GameMainMenu implements MouseListener {
      JButton aboutJB;
      JFrame menuFrame;
      ImageIcon startIcon;
-    ImageIcon aboutIcon;
-    ImageIcon aboutIconSelected;
-    ImageIcon startIconSelected;
+     ImageIcon aboutIcon;
+     ImageIcon aboutIconSelected;
+     ImageIcon startIconSelected;
     public GameMainMenu() {
         menuFrame = new JFrame("Main Menu");
         menuFrame.setLocation(250,150);
@@ -32,13 +32,15 @@ public class GameMainMenu implements MouseListener {
         aboutIconSelected = new ImageIcon(isometric.class.getResource("image/about button selected.png"));
 
         startJB = new JButton(startIcon);
-        startJB.setBounds(189,213,441,114);
+        startJB.setBounds(189,213,437,110);
         startJB.addMouseListener(this);
+        startJB.setBorder(null);
 
         aboutJB = new JButton(aboutIcon);
-        aboutJB.setBounds(256,365,331,80);
+        aboutJB.setBounds(256,365,327,76);
         aboutJB.addMouseListener(this);
         //adding action listener later
+        aboutJB.setBorder(null);
 
         menuJP.add(startJB,0);
         menuJP.add(aboutJB,1);
@@ -57,8 +59,7 @@ public class GameMainMenu implements MouseListener {
 
         if(e.getSource()==startJB){
             menuFrame.setVisible(false);
-           // new isometric();
-            new Loading();
+            loading();
         }
         if(e.getSource()==aboutJB){
             //baedan add shavad
@@ -93,5 +94,31 @@ public class GameMainMenu implements MouseListener {
         if(e.getSource()==aboutJB){
             aboutJB.setIcon(aboutIcon);
         }
+    }
+    public void loading(){
+        JFrame loadFrame = new JFrame("THE GAME IS LOADING ... ");
+        loadFrame.setLocation(250,0);
+        loadFrame.setLayout(new BorderLayout());
+        JPanel panel = new JPanel() ;
+
+        Image LOADING = new ImageIcon(isometric.class.getResource("image/load.gif")).getImage();
+        Image loading = LOADING.getScaledInstance(1000, 800, Image.SCALE_DEFAULT);
+        JLabel item=new JLabel(new ImageIcon(loading));
+//        JLabel j5 = new JLabel(new ImageIcon("src/graphic/image/loading2.png"));
+//        j5.setBounds(0, 0, 300, 248);
+        panel.setBounds(0, 0, 1000, 800);
+        panel.setBackground(Color.black);
+        panel.add(item);
+        loadFrame.add(panel);
+        loadFrame.setSize(1000, 800);
+        loadFrame.setLayout(null);
+        loadFrame.setVisible(true);
+
+        Timer timer = new Timer(4500, e -> {
+            loadFrame.setVisible(false);
+            new isometric();
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 }

@@ -32,8 +32,10 @@ public class isometric {
     static Image SPEEDLIMITER_IMAGE;
     static Image PLAYER1_IMAGE;
     static Image PLAYER2_IMAGE;
+   // static GameController gameController;
 
     public isometric(){
+
         frame =new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       //  frame.setLayout(new BorderLayout());
@@ -62,11 +64,18 @@ public class isometric {
         myPanel.add(new JLabel("y:"));
         myPanel.add(yField);
 
-        while (!xField.getText().matches("[0-9]+") || !yField.getText().matches("[0-9]+")) {
+        GameController gameController = new GameController();
+        while (true) {
+            if((xField.getText().matches("[0-9]+") && yField.getText().matches("[0-9]+"))){
+                Rows = Integer.parseInt(xField.getText());
+                Cols = Integer.parseInt(yField.getText());
+                if(gameController.boardDimensionValidator(Cols,Rows)){
+                    break;
+                }
+            }
             int result = JOptionPane.showConfirmDialog(null, myPanel, "ابعاد صفحه را وارد کنید", JOptionPane.DEFAULT_OPTION);
         }
-        Rows = Integer.parseInt(xField.getText());
-        Cols = Integer.parseInt(yField.getText());
+
         Game.setBoard(new Board(Cols, Rows));
         faseleOfoghi= Rows*(TILE_HEIGHT-1);
 
@@ -324,10 +333,10 @@ class TileListener implements MouseListener{
                     String input = JOptionPane.showInputDialog("مقدار محدودیت را وارد کنید");
                     if (input != null && input.matches("[0-9]+")) {
                         int limit = Integer.parseInt(input);
-                        // if ()  shart bara adad soartgir
-                        isometric.drawItem(i, j, "speedlimiter", limit);
-                        board.setBoard(new SpeedLimiter(i,j,limit),i,j);
-                        //
+                        if(limit>0) {
+                            isometric.drawItem(i, j, "speedlimiter", limit);
+                            board.setBoard(new SpeedLimiter(i, j, limit), i, j);
+                        }
                     }
                     break;
                 case "p1":
