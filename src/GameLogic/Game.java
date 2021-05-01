@@ -24,7 +24,7 @@ public class Game {
         //p1.updateBoard();
         board.showBoard();
         while(Star.count>0){
-            Player.gettingDestinationAndMove();
+            //Player.gettingDestinationAndMove();
         }
         if(p1.getScore() > p2.getScore()){
             System.out.println("GameLogic.Player 1 Win");

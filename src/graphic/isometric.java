@@ -64,12 +64,12 @@ public class isometric {
         myPanel.add(new JLabel("y:"));
         myPanel.add(yField);
 
-        GameController gameController = new GameController();
+        //GameController gameController = new GameController();
         while (true) {
             if((xField.getText().matches("[0-9]+") && yField.getText().matches("[0-9]+"))){
                 Rows = Integer.parseInt(xField.getText());
                 Cols = Integer.parseInt(yField.getText());
-                if(gameController.boardDimensionValidator(Cols,Rows)){
+                if(GameController.boardDimensionValidator(Cols,Rows)){
                     break;
                 }
             }

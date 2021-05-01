@@ -2,7 +2,30 @@ package GameLogic;
 
 public class GameController {
 
-    public boolean pathCheck(int xGoal, int yGoal , Player turn ) {
+    private static boolean turn = true;
+
+    public static boolean gettingDestinationAndMove(int XGoal,int YGoal) {
+       Player turn = changeTurn();
+        if (destinationValidator(XGoal, YGoal , turn ) && pathCheck(XGoal, YGoal , turn) && speedLimiterCheck(XGoal, YGoal , turn )) {
+            starCounter(XGoal, YGoal , turn);
+            turn.Move(XGoal, YGoal);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static Player changeTurn() {
+        if (turn) { // true stands for p1 turn
+            turn = false;
+            return Player.getP1();
+        } else { // false stands for p2 turn
+            turn = true;
+            return Player.getP2();
+        }
+    }
+
+    public static boolean pathCheck(int xGoal, int yGoal , Player turn ) {
         if(Game.getBoardInstance().getBoardElement(xGoal, yGoal) != null) {
             if (Game.getBoardInstance().getBoardElement(xGoal, yGoal).getClass().getName().equals("GameLogic.Player")) {
                 return false;
@@ -47,7 +70,7 @@ public class GameController {
         return true;
     }
 
-    public boolean destinationValidator(int xGoal, int yGoal , Player turn) {
+    public static boolean destinationValidator(int xGoal, int yGoal , Player turn) {
         if (turn.getPointOfPlayer() .x == xGoal) {
             return true;
         } else if (turn.getPointOfPlayer().y == yGoal) {
@@ -60,7 +83,7 @@ public class GameController {
     }
 
 
-    public void starCounter(int xGoal, int yGoal , Player turn ) {
+    public static void starCounter(int xGoal, int yGoal , Player turn ) {
         if (turn.getPointOfPlayer().x< xGoal) {
             if (destinationValidator(xGoal, yGoal  , turn  )) {
                 for (int i = turn.getPointOfPlayer().x + 1; i <= xGoal; i++) {
@@ -153,10 +176,10 @@ public class GameController {
             }
         }
     }
-    public boolean boardDimensionValidator(int width,int height){
+    public static boolean boardDimensionValidator(int width,int height){
         return width>=2 && height>=2 ;
     }
-    public boolean speedLimiterCheck(int xGoal, int yGoal , Player turn ){
+    public static boolean speedLimiterCheck(int xGoal, int yGoal , Player turn ){
         if(turn.getLimit().size()!= 0) {
             int limit = turn.getLimit().get(0);
             if (xGoal == turn.getPointOfPlayer().x) {
