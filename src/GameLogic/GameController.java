@@ -4,7 +4,11 @@ public class GameController {
 
     private static int turn = 1;
 
-    public static boolean gettingDestinationAndMove(int XGoal,int YGoal) {
+    public static int getTurn() {
+        return turn;
+    }
+
+    public static boolean gettingDestinationAndMove(int XGoal, int YGoal) {
        Player turn = whoseTurn();
         if (destinationValidator(XGoal, YGoal , turn ) && pathCheck(XGoal, YGoal , turn) && speedLimiterCheck(XGoal, YGoal , turn )) {
             starCounter(XGoal, YGoal , turn);
