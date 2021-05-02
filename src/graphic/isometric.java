@@ -9,9 +9,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -32,6 +30,7 @@ public class isometric {
     static Image SPEEDLIMITER_IMAGE;
     static Image PLAYER1_IMAGE;
     static Image PLAYER2_IMAGE;
+    static Image BACKGROUND_IMAGE;
    // static GameController gameController;
 
     public isometric(){
@@ -84,9 +83,17 @@ public class isometric {
         //layeredPane.setOpaque(true);
         int scrollHeight= ((Rows+Cols)*(TILE_HEIGHT )/2) +faseleAmoodi;
         int scrollWidth=faseleOfoghi +Cols * (TILE_HEIGHT )+80;
-        Image BACKGROUND_IMAGE=new ImageIcon("src/graphic/image/background.jpg").getImage().getScaledInstance(scrollWidth+500,scrollHeight+400,Image.SCALE_SMOOTH);
+        BACKGROUND_IMAGE=new ImageIcon("src/graphic/image/background.jpg").getImage().getScaledInstance(scrollWidth+500,scrollHeight+400,Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(BACKGROUND_IMAGE));
         background.setBounds(0,0,scrollWidth+500,scrollHeight+400);
+        layeredPane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Image scaledBackground=BACKGROUND_IMAGE.getScaledInstance(e.getComponent().getWidth(),e.getComponent().getHeight(),Image.SCALE_SMOOTH);
+                background.setIcon(new ImageIcon(scaledBackground));
+                background.setBounds(0,0,e.getComponent().getWidth(),e.getComponent().getHeight());
+            }
+        });
         layeredPane.add(background,new Integer(0));
 
         layeredPane.setLayout(null);
@@ -153,11 +160,14 @@ public class isometric {
         menu.add(CreateButton("بازیکن 1",new ImageIcon(PLAYER1_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight+10,Image.SCALE_SMOOTH)),"p1"));
         menu.add(CreateButton("بازیکن 2",new ImageIcon(PLAYER2_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight+10,Image.SCALE_SMOOTH)),"p2"));
 
+        JButton start= CreateButton("",new ImageIcon("src/graphic/image/startgame.gif"),"");
+        start.addActionListener(e -> new GameGUI());
+        menu.add(start);
 
 
 
 
-        frame.setSize((Cols+2)*TILE_WIDTH,500);
+        frame.setSize((Cols+2)*TILE_WIDTH,550);
         frame.setVisible(true);
     }
     public JButton CreateButton(String nameFa,Icon icon,String nameEn){
