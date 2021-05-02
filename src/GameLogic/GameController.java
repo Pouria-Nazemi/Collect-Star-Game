@@ -2,27 +2,35 @@ package GameLogic;
 
 public class GameController {
 
-    private static boolean turn = true;
+    private static int turn = 1;
 
     public static boolean gettingDestinationAndMove(int XGoal,int YGoal) {
-       Player turn = changeTurn();
+       Player turn = whoseTurn();
         if (destinationValidator(XGoal, YGoal , turn ) && pathCheck(XGoal, YGoal , turn) && speedLimiterCheck(XGoal, YGoal , turn )) {
             starCounter(XGoal, YGoal , turn);
             turn.Move(XGoal, YGoal);
+            changeTurn();
             return true;
         }
         else{
             return false;
         }
     }
-    public static Player changeTurn() {
-        if (turn) { // true stands for p1 turn
-            turn = false;
+    public static void changeTurn() {
+        if (turn==1) { // true stands for p1 turn
+            turn = 2;
+        } else if(turn==2) { // false stands for p2 turn
+            turn = 1;
+        }
+    }
+    public static Player whoseTurn(){
+        if(turn==1){
             return Player.getP1();
-        } else { // false stands for p2 turn
-            turn = true;
+        }
+        else if(turn==2){
             return Player.getP2();
         }
+        return null;
     }
 
     public static boolean pathCheck(int xGoal, int yGoal , Player turn ) {
