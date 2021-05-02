@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+
 public class GameMainMenu implements MouseListener {
      JButton startJB;
      JButton aboutJB;
@@ -14,10 +15,15 @@ public class GameMainMenu implements MouseListener {
      ImageIcon aboutIcon;
      ImageIcon aboutIconSelected;
      ImageIcon startIconSelected;
+
+     static MusicPlayer music;
+
     public GameMainMenu() {
         menuFrame = new JFrame("Main Menu");
         menuFrame.setLocation(250,150);
         menuFrame.setResizable(false);
+
+
 
         JPanel menuJP = new JPanel();
 
@@ -30,6 +36,8 @@ public class GameMainMenu implements MouseListener {
         aboutIcon = new ImageIcon(isometric.class.getResource("image/about button.png"))/*.getImage().getScaledInstance(331,70,Image.SCALE_SMOOTH)*/;
         startIconSelected = new ImageIcon(isometric.class.getResource("image/start button selected.png"));
         aboutIconSelected = new ImageIcon(isometric.class.getResource("image/about button selected.png"));
+
+        //music = new MusicPlayer("D:\\Sleep Away.wav");
 
         startJB = new JButton(startIcon);
         startJB.setBounds(189,213,437,110);
@@ -51,13 +59,14 @@ public class GameMainMenu implements MouseListener {
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuFrame.setSize(800,500);
         menuFrame.setVisible(true);
-
     }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
         if(e.getSource()==startJB){
+           // music.stopMusic();
             menuFrame.setVisible(false);
             loading();
         }
@@ -99,6 +108,7 @@ public class GameMainMenu implements MouseListener {
         JFrame loadFrame = new JFrame("THE GAME IS LOADING ... ");
         loadFrame.setLocation(250,0);
         loadFrame.setLayout(new BorderLayout());
+        loadFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel() ;
 
         Image LOADING = new ImageIcon(isometric.class.getResource("image/load.gif")).getImage();
@@ -121,4 +131,5 @@ public class GameMainMenu implements MouseListener {
         timer.setRepeats(false);
         timer.start();
     }
+
 }
