@@ -66,12 +66,12 @@ public class GameMainMenu implements MouseListener {
     public void mouseClicked(MouseEvent e) {
 
         if(e.getSource()==startJB){
-           // music.stopMusic();
+            //music.stopMusic();
             menuFrame.setVisible(false);
             loading();
         }
         if(e.getSource()==aboutJB){
-            //baedan add shavad
+           new AboutFrame();
         }
     }
 
