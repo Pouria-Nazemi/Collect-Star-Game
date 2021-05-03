@@ -1,4 +1,5 @@
 package graphic;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -10,7 +11,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class MusicPlayer/* extends Thread*/ {
+public class MusicPlayer /* extends Thread*/ {
 
     private Clip clip;
     private AudioInputStream audioInputStream;
@@ -53,10 +54,6 @@ public class MusicPlayer/* extends Thread*/ {
 
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
-        /*while (true) {
-
-        }*/
-
     }
 
     public void stopMusic() {

@@ -5,7 +5,7 @@ import GameLogic.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import static graphic.isometric.*;
+import static graphic.Isometric.*;
 
 public class GameGUI {
     static PlayerIcon P1;
@@ -327,13 +327,13 @@ class TilesMouseListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        Icon imgIcon = new ImageIcon(isometric.SElECTED_IMAGE);
+        Icon imgIcon = new ImageIcon(Isometric.SElECTED_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        Icon imgIcon = new ImageIcon(isometric.TILE_IMAGE);
+        Icon imgIcon = new ImageIcon(Isometric.TILE_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
     }
 
