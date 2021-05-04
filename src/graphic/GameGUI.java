@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import static graphic.Isometric.*;
+import static graphic.GameCreator.*;
 
 public class GameGUI {
     static PlayerIcon P1;
@@ -20,6 +20,7 @@ public class GameGUI {
 
     public GameGUI(){
        frame.getContentPane().removeAll();
+       frame.setTitle("Star Collector Game");
        JLabel loadingStart= new JLabel(new ImageIcon("src/graphic/image/wait for start.gif"));
        frame.add(loadingStart);
        frame.validate(); // ino khodamam nemidoonam chie:|  vali nabashe safhe Load nemishe
@@ -477,13 +478,13 @@ class TilesMouseListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        Icon imgIcon = new ImageIcon(Isometric.SElECTED_IMAGE);
+        Icon imgIcon = new ImageIcon(GameCreator.SElECTED_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        Icon imgIcon = new ImageIcon(Isometric.TILE_IMAGE);
+        Icon imgIcon = new ImageIcon(GameCreator.TILE_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
     }
 

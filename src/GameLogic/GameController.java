@@ -109,7 +109,7 @@ public class GameController {
                         if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.Star")) {
                             turn.addScore();  /*  means : startCount ++  */
                             Game.getBoardInstance().setBoard(null,i , turn.getPointOfPlayer().y);  /* When the player steals the star , that star will be deleted */
-                            Star.count--;  /*  reduce One star from total stars that were available in the game */
+                            Star.decreaseCount();  /*  reduce One star from total stars that were available in the game */
                         }
                         else if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y);
@@ -132,7 +132,7 @@ public class GameController {
                         if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.Star")){
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null,i,turn.getPointOfPlayer().y);
-                            Star.count--;
+                            Star.decreaseCount();
                         }
                         else if (Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(i, turn.getPointOfPlayer().y);
@@ -154,7 +154,7 @@ public class GameController {
                         if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName().equals("GameLogic.Star")) {
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null, turn.getPointOfPlayer().x, i);
-                            Star.count--;
+                            Star.decreaseCount();
                         }
                         else if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i);
@@ -177,7 +177,7 @@ public class GameController {
                         if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x, i).getClass().getName().equals("GameLogic.Star")) {
                             turn.addScore();
                             Game.getBoardInstance().setBoard(null, turn.getPointOfPlayer().x, i);
-                            Star.count--;
+                            Star.decreaseCount();
                         }
                         else if (Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i).getClass().getName().equals("GameLogic.SpeedLimiter")){
                             SpeedLimiter sl = (SpeedLimiter) Game.getBoardInstance().getBoardElement(turn.getPointOfPlayer().x,i);

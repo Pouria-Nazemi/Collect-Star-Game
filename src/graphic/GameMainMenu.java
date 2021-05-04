@@ -25,15 +25,15 @@ public class GameMainMenu implements MouseListener {
 
         JPanel menuJP = new JPanel();
 
-        Image backgroundIm = new ImageIcon(Isometric.class.getResource("image/Game MAIN MENU.png")).getImage().getScaledInstance(800,500,Image.SCALE_SMOOTH);
+        Image backgroundIm = new ImageIcon(GameCreator.class.getResource("image/Game MAIN MENU.png")).getImage().getScaledInstance(800,500,Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(backgroundIm));
         background.setBounds(0,0,800,500);
         menuJP.add(background);
 
-        startIcon = new ImageIcon(Isometric.class.getResource("image/start button.png"))/*.getImage().getScaledInstance(439,109,Image.SCALE_SMOOTH)*/;
-        aboutIcon = new ImageIcon(Isometric.class.getResource("image/about button.png"))/*.getImage().getScaledInstance(331,70,Image.SCALE_SMOOTH)*/;
-        startIconSelected = new ImageIcon(Isometric.class.getResource("image/start button selected.png"));
-        aboutIconSelected = new ImageIcon(Isometric.class.getResource("image/about button selected.png"));
+        startIcon = new ImageIcon(GameCreator.class.getResource("image/start button.png"))/*.getImage().getScaledInstance(439,109,Image.SCALE_SMOOTH)*/;
+        aboutIcon = new ImageIcon(GameCreator.class.getResource("image/about button.png"))/*.getImage().getScaledInstance(331,70,Image.SCALE_SMOOTH)*/;
+        startIconSelected = new ImageIcon(GameCreator.class.getResource("image/start button selected.png"));
+        aboutIconSelected = new ImageIcon(GameCreator.class.getResource("image/about button selected.png"));
 
         //music = new MusicPlayer("D:\\Sleep Away.wav");
 
@@ -109,7 +109,7 @@ public class GameMainMenu implements MouseListener {
         loadFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel() ;
 
-        Image LOADING = new ImageIcon(Isometric.class.getResource("image/load.gif")).getImage();
+        Image LOADING = new ImageIcon(GameCreator.class.getResource("image/load.gif")).getImage();
         Image loading = LOADING.getScaledInstance(1000, 800, Image.SCALE_DEFAULT);
         JLabel item=new JLabel(new ImageIcon(loading));
 //        JLabel j5 = new JLabel(new ImageIcon("src/graphic/image/loading2.png"));
@@ -124,7 +124,7 @@ public class GameMainMenu implements MouseListener {
 
         Timer timer = new Timer(4500, e -> {
             loadFrame.setVisible(false);
-            new Isometric();
+            new GameCreator();
         });
         timer.setRepeats(false);
         timer.start();

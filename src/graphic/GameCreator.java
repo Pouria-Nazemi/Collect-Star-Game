@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*; /* For dealing with different types of events fired by AWT components*/
 import java.io.IOException; /*Java's representation of a file or directory path name*/
 
-public class Isometric {
+public class GameCreator {
     static JFrame frame;
     static JLayeredPane layeredPane;
     static String selected="";
@@ -31,8 +31,8 @@ public class Isometric {
     static Image BACKGROUND_IMAGE;
 
 
-    public Isometric(){
-        frame = new JFrame();
+    public GameCreator(){
+        frame = new JFrame("Creating Game");
         /* to close the program automatically after pushing x bottom */
         frame.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
         frame.setLocation( 400 , 150 );
@@ -48,7 +48,7 @@ public class Isometric {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        STAR_IMAGE = new ImageIcon(Isometric.class.getResource("image/star-coin.gif")).getImage();
+        STAR_IMAGE = new ImageIcon(GameCreator.class.getResource("image/star-coin.gif")).getImage();
         SPEEDLIMITER_IMAGE = new ImageIcon(getClass().getResource("image/speedlimiter.gif")).getImage();
 
         /* Creating text fields to receive the dimention of the game board */
@@ -143,15 +143,18 @@ public class Isometric {
         menu.add(CreateButton("بازیکن 1" , player1 ,"p1" ));
         menu.add(CreateButton("بازیکن 2", player2 ,"p2" ));
         JButton start = CreateButton("", new ImageIcon("src/graphic/image/startgame.gif") ,"");
-
-        start.addActionListener(e -> new GameGUI());
+        start.setEnabled(false);
+        start.addActionListener(e -> {
+            if (start.isEnabled())
+                new GameGUI();
+        });
         menu.add(start);
 
         frame.setSize(( Cols + 2 ) * TILE_WIDTH , 550 );
         frame.setVisible( true );
     }
 
-    public JButton CreateButton( String nameFa , Icon icon , String nameEn ){
+    private JButton CreateButton( String nameFa , Icon icon , String nameEn ){
         JButton button;
         if ( icon == null ) {
             button = new JButton( nameFa );
@@ -225,7 +228,7 @@ public class Isometric {
         Image speedlimiter = SPEEDLIMITER_IMAGE.getScaledInstance(60 , 68 , Image.SCALE_DEFAULT );
 
         JLabel item;
-        Container container= Isometric.frame.getContentPane();
+        Container container= GameCreator.frame.getContentPane();
         JPanel menu = (JPanel) container.getComponent(1);
         int layer; /* To put different objects on different layers!  */
 
@@ -233,6 +236,12 @@ public class Isometric {
             case "star":
                 item = new JLabel(new ImageIcon(star));
                 item.setBounds((faseleOfoghi + isoX ),isoY - 13 + faseleAmoodi , TILE_WIDTH , TILE_HEIGHT);
+                item.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        Star.decreaseCount();
+                    }
+                });
                 /* Each type of object has its own layer ! */
                 layer = 3;
                 break;
@@ -287,12 +296,22 @@ public class Isometric {
             @Override
             public void mouseClicked(MouseEvent e) {
                 /* If the user clicks on a object on the board , it will be removed */
-                Isometric.layeredPane.remove(e.getComponent());
-                Isometric.layeredPane.repaint();
+                GameCreator.layeredPane.remove(e.getComponent());
+                GameCreator.layeredPane.repaint();
                 Game.getBoardInstance().setBoard(null,i,j);
+                checkStartPermission(); //if  star or player is removed, start button will be disabled;
             }
         });
         layeredPane.add(item, layer,Cols-j-1);
+    }
+
+    static void checkStartPermission(){
+        Container container= GameCreator.frame.getContentPane();
+        JPanel menu = (JPanel) container.getComponent(1);
+        if(!menu.getComponent(3).isEnabled() && !menu.getComponent(4).isEnabled() && Star.getCount()>0){
+            menu.getComponent(5).setEnabled(true);
+        }else
+            menu.getComponent(5).setEnabled(false);
     }
 
     public static void main(String[] args) {
@@ -311,19 +330,19 @@ class TileListener implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         Board board = Game.getBoardInstance();
-        Container container = Isometric.frame.getContentPane();
+        Container container = GameCreator.frame.getContentPane();
         JPanel menu= (JPanel) container.getComponent(1);
 
         /* Setting the board's beads according to the place that the user clicked on ! */
         if( board.getBoardElement(i,j) == null ) {
-            switch ( Isometric.selected ) {
+            switch ( GameCreator.selected ) {
                 case "wall":
-                    Isometric.drawItem( i , j , "wall" );
+                    GameCreator.drawItem( i , j , "wall" );
                     board.setBoard( new Wall( i , j ) , i , j );
                     break;
 
                 case "star":
-                    Isometric.drawItem( i , j , "star" );
+                    GameCreator.drawItem( i , j , "star" );
                     board.setBoard( new Star( i , j ) , i , j );
                     break;
 
@@ -332,33 +351,34 @@ class TileListener implements MouseListener{
                     if (input != null && input.matches("[0-9]+")) {
                         int limit = Integer.parseInt(input);
                         if(limit>0) {
-                            Isometric.drawItem( i , j , "speedlimiter" , limit );
+                            GameCreator.drawItem( i , j , "speedlimiter" , limit );
                             board.setBoard( new SpeedLimiter( i , j , limit) , i , j );
                         }
                     }
                     break;
 
                 case "p1":
-                    Isometric.drawItem( i , j , "p1" );
+                    GameCreator.drawItem( i , j , "p1" );
                     Player.getP1().setPointOfPlayer( i , j );
                     board.setBoard( Player.getP1() , i , j );
                     JButton button= (JButton) menu.getComponent(3);
                     button.setBackground( Color.white );
                     button.setEnabled( false );
-                    Isometric.selected = "" ;
+                    GameCreator.selected = "" ;
                     break;
 
                 case "p2":
-                    Isometric.drawItem( i , j , "p2" );
+                    GameCreator.drawItem( i , j , "p2" );
                     Player.getP2().setPointOfPlayer( i , j );
                     board.setBoard( Player.getP2() , i , j );
                     button= (JButton) menu.getComponent(4);
                     button.setBackground( Color.white);
                     button.setEnabled( false );
-                    Isometric.selected = "";
+                    GameCreator.selected = "";
                     break;
             }
         }
+        GameCreator.checkStartPermission();
     }
 
     @Override
@@ -373,13 +393,13 @@ class TileListener implements MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        Icon imgIcon = new ImageIcon( Isometric.SElECTED_IMAGE );
+        Icon imgIcon = new ImageIcon( GameCreator.SElECTED_IMAGE );
         ((JLabel)e.getComponent()).setIcon( imgIcon );
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        Icon imgIcon = new ImageIcon( Isometric.TILE_IMAGE );
+        Icon imgIcon = new ImageIcon( GameCreator.TILE_IMAGE );
         ((JLabel)e.getComponent()).setIcon( imgIcon );
     }
 }
