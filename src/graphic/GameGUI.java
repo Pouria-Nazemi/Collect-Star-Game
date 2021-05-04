@@ -5,12 +5,18 @@ import GameLogic.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import static graphic.isometric.*;
+
+import static graphic.Isometric.*;
 
 public class GameGUI {
     static PlayerIcon P1;
     static PlayerIcon P2;
     final static ImageIcon effect=new ImageIcon("src/graphic/image/effect.gif");
+    private static JLabel ScoreP1;
+    private static JLabel ScoreP2;
+    private static JLabel TurnInfo;
+    private static JTextArea listP1;
+    private static JTextArea listP2;
 
     public GameGUI(){
        frame.getContentPane().removeAll();
@@ -49,7 +55,150 @@ public class GameGUI {
             }
         });
         layeredPane.add(background,new Integer(0));
+        createScoreboards();
+        createLimitersList();
+    }
+    private void createScoreboards(){
+        TurnInfo=new JLabel("نوبت بازیکن 1  - با کلیک روی یکی از خانه ها حرکت کنید",SwingConstants.CENTER);
+        TurnInfo.setBounds((frame.getWidth()-300)/2,0,300,30);
+        TurnInfo.setForeground(new Color(11, 86, 1));
 
+        frame.getLayeredPane().add(TurnInfo,new Integer(4));
+
+        ImageIcon blueCircle=new ImageIcon("src/graphic/image/BlueCircle.gif");
+        JLabel circleP1= new JLabel(blueCircle);
+        circleP1.setBounds(0,0,100,100);
+
+        JLabel P1Lable= new JLabel("بازیکن یک");
+        P1Lable.setBounds(20,0,150,150);
+        P1Lable.setFont(new Font("Calibri",Font.BOLD,16));
+
+        ScoreP1=new JLabel("0");
+        ScoreP1.setBounds(40,0,150,90);
+        ScoreP1.setFont(new Font("Calibri",Font.BOLD,40));
+        ScoreP1.setForeground(Color.yellow);
+
+        frame.getLayeredPane().add(circleP1,new Integer(1));
+        frame.getLayeredPane().add(P1Lable,new Integer(2));
+        frame.getLayeredPane().add(ScoreP1,new Integer(3));
+
+        ImageIcon greenCircle=new ImageIcon("src/graphic/image/GreenCircle.gif");
+        JLabel circleP2= new JLabel(greenCircle);
+        circleP2.setBounds(frame.getWidth()-120,0,100,100);
+
+        JLabel P2Lable= new JLabel("بازیکن دو");
+        P2Lable.setBounds(frame.getWidth()-95,0,150,150);
+        P2Lable.setFont(new Font("Calibri",Font.BOLD,16));
+
+        ScoreP2=new JLabel("0");
+        ScoreP2.setBounds(frame.getWidth()-80,0,150,90);
+        ScoreP2.setFont(new Font("Calibri",Font.BOLD,40));
+        ScoreP2.setForeground(Color.yellow);
+
+        frame.getLayeredPane().add(circleP2,new Integer(1));
+        frame.getLayeredPane().add(P2Lable,new Integer(2));
+        frame.getLayeredPane().add(ScoreP2,new Integer(3));
+
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                circleP2.setLocation(frame.getWidth()-120,circleP2.getY());
+                P2Lable.setLocation(frame.getWidth()-95,P2Lable.getY());
+                ScoreP2.setLocation(frame.getWidth()-80,ScoreP2.getY());
+                TurnInfo.setLocation((frame.getWidth()-300)/2,0);
+            }
+        });
+
+    }
+
+    static void updateScores(){
+        ScoreP1.setText(""+Player.getP1().getScore());
+        ScoreP2.setText(""+ Player.getP2().getScore());
+    }
+
+    private  void createLimitersList(){
+        Image frame1Image=new ImageIcon("src/graphic/image/frame1.png").getImage().getScaledInstance(150,200,Image.SCALE_SMOOTH);
+        JLabel frame1=new JLabel(new ImageIcon(frame1Image));
+        frame1.setBounds(0,frame.getHeight()-250,150,200);
+        frame.getLayeredPane().add(frame1,new Integer(3));
+
+        Image frame2Image=new ImageIcon("src/graphic/image/frame2.png").getImage().getScaledInstance(150+10,200+10,Image.SCALE_SMOOTH);
+        JLabel frame2=new JLabel(new ImageIcon(frame2Image));
+        frame2.setBounds(frame.getWidth()-180,frame.getHeight()-250,150+10,200+10);
+        frame.getLayeredPane().add(frame2,new Integer(3));
+
+        listP1= new JTextArea();
+        listP1.setToolTipText("سرعتگیر های بازیکن یک");
+        listP1.setBorder(BorderFactory.createEmptyBorder(10,60,2,2));
+        listP1.setEditable(false);
+        listP1.setFont(new Font(listP1.getFont().getName(),Font.BOLD,25));
+        listP1.setSize(new Dimension(150,200));
+        JScrollPane scroll1=new JScrollPane(listP1);
+        scroll1.setAutoscrolls(false);
+        scroll1.setPreferredSize(new Dimension(150,400));
+        scroll1.setBounds(0+7,frame.getHeight()-250+10,150-14,200-15);
+        scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        frame.getLayeredPane().add(scroll1,0);
+
+        listP2= new JTextArea();
+        listP2.setToolTipText("سرعتگیر های بازیکن دو");
+        listP2.setEditable(false);
+        listP2.setFont(new Font(listP2.getFont().getName(),Font.BOLD,25));
+        listP2.setSize(new Dimension(150,200));
+        listP2.setBorder(BorderFactory.createEmptyBorder(10,50,2,2));
+        JScrollPane scroll2=new JScrollPane(listP2);
+        scroll2.setBounds(frame.getWidth()-180+20+5,frame.getHeight()-250+10+15,150+10-14-25-12,200+10-45);
+
+        scroll2.setPreferredSize(new Dimension(150+40,400));
+        scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        frame.getLayeredPane().add(scroll2,0);
+
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+               frame1.setLocation(frame1.getX(),frame.getHeight()-250);
+               frame2.setLocation(frame.getWidth()-180,frame.getHeight()-250);
+               scroll1.setLocation(0+7,frame.getHeight()-250+10);
+               scroll2.setLocation(frame.getWidth()-180+20+5,frame.getHeight()-250+10+15);
+            }
+        });
+
+    }
+
+    static void printLimits(){
+        StringBuilder text1=new StringBuilder();
+        for (Integer integer : Player.getP2().getLimit()) {
+            text1.append(integer).append("\n");
+        }
+        listP1.setText(text1.toString());
+
+        StringBuilder text2=new StringBuilder();
+        for (Integer limit : Player.getP1().getLimit()) {
+            text2.append(limit).append("\n");
+        }
+        listP2.setText(text2.toString());
+    }
+
+    static void UpdateTurnInfo(){
+        int turn=GameController.getTurn();
+        String text= String.format("نوبت بازیکن %d", turn);
+        Player player;
+
+        if (turn==1)
+            player = Player.getP1();
+        else
+            player= Player.getP2();
+
+        if (player.getLimit().size() != 0) {
+            int limit=player.getLimit().get(0);
+            text+=String.format(" -  شما حداکثر %d خانه میتوانید حرکت کنید", limit);
+            TurnInfo.setForeground(Color.red);
+        }else
+            TurnInfo.setForeground(new Color(11, 86, 1));
+
+        TurnInfo.setText(text);
     }
 
     private void createBoard(){
@@ -311,8 +460,9 @@ class TilesMouseListener implements MouseListener {
             }
         }else
             JOptionPane.showMessageDialog(null, "این حرکت مجاز نمی باشد!");
-
-
+        GameGUI.printLimits();
+        GameGUI.updateScores();
+        GameGUI.UpdateTurnInfo();
     }
 
     @Override
@@ -327,13 +477,13 @@ class TilesMouseListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        Icon imgIcon = new ImageIcon(isometric.SElECTED_IMAGE);
+        Icon imgIcon = new ImageIcon(Isometric.SElECTED_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        Icon imgIcon = new ImageIcon(isometric.TILE_IMAGE);
+        Icon imgIcon = new ImageIcon(Isometric.TILE_IMAGE);
         ((JLabel)e.getComponent()).setIcon(imgIcon);
     }
 
