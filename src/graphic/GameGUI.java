@@ -79,9 +79,9 @@ public class GameGUI {
         ScoreP1.setFont(new Font("Calibri",Font.BOLD,40));
         ScoreP1.setForeground(Color.yellow);
 
-        frame.getLayeredPane().add(circleP1,new Integer(1));
-        frame.getLayeredPane().add(P1Lable,new Integer(2));
-        frame.getLayeredPane().add(ScoreP1,new Integer(3));
+        frame.getLayeredPane().add(circleP1,new Integer(7));
+        frame.getLayeredPane().add(P1Lable,new Integer(8));
+        frame.getLayeredPane().add(ScoreP1,new Integer(9));
 
         ImageIcon greenCircle=new ImageIcon("src/graphic/image/GreenCircle.gif");
         JLabel circleP2= new JLabel(greenCircle);
@@ -96,9 +96,9 @@ public class GameGUI {
         ScoreP2.setFont(new Font("Calibri",Font.BOLD,40));
         ScoreP2.setForeground(Color.yellow);
 
-        frame.getLayeredPane().add(circleP2,new Integer(1));
-        frame.getLayeredPane().add(P2Lable,new Integer(2));
-        frame.getLayeredPane().add(ScoreP2,new Integer(3));
+        frame.getLayeredPane().add(circleP2,new Integer(7));
+        frame.getLayeredPane().add(P2Lable,new Integer(8));
+        frame.getLayeredPane().add(ScoreP2,new Integer(9));
 
         frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -121,12 +121,12 @@ public class GameGUI {
         Image frame1Image=new ImageIcon("src/graphic/image/frame1.png").getImage().getScaledInstance(150,200,Image.SCALE_SMOOTH);
         JLabel frame1=new JLabel(new ImageIcon(frame1Image));
         frame1.setBounds(0,frame.getHeight()-250,150,200);
-        frame.getLayeredPane().add(frame1,new Integer(3));
+        frame.getLayeredPane().add(frame1,new Integer(2));
 
-        Image frame2Image=new ImageIcon("src/graphic/image/frame2.png").getImage().getScaledInstance(150+10,200+10,Image.SCALE_SMOOTH);
+        Image frame2Image=new ImageIcon("src/graphic/image/frame2.png").getImage().getScaledInstance(160, 210,Image.SCALE_SMOOTH);
         JLabel frame2=new JLabel(new ImageIcon(frame2Image));
-        frame2.setBounds(frame.getWidth()-180,frame.getHeight()-250,150+10,200+10);
-        frame.getLayeredPane().add(frame2,new Integer(3));
+        frame2.setBounds(frame.getWidth()-180,frame.getHeight()-250, 160, 210);
+        frame.getLayeredPane().add(frame2,new Integer(2));
 
         listP1= new JTextArea();
         listP1.setToolTipText("سرعتگیر های بازیکن یک");
@@ -137,10 +137,10 @@ public class GameGUI {
         JScrollPane scroll1=new JScrollPane(listP1);
         scroll1.setAutoscrolls(false);
         scroll1.setPreferredSize(new Dimension(150,400));
-        scroll1.setBounds(0+7,frame.getHeight()-250+10,150-14,200-15);
+        scroll1.setBounds(7,frame.getHeight()-250+10, 136, 185);
         scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scroll1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        frame.getLayeredPane().add(scroll1,0);
+        frame.getLayeredPane().add(scroll1,new Integer(1));
 
         listP2= new JTextArea();
         listP2.setToolTipText("سرعتگیر های بازیکن دو");
@@ -149,20 +149,20 @@ public class GameGUI {
         listP2.setSize(new Dimension(150,200));
         listP2.setBorder(BorderFactory.createEmptyBorder(10,50,2,2));
         JScrollPane scroll2=new JScrollPane(listP2);
-        scroll2.setBounds(frame.getWidth()-180+20+5,frame.getHeight()-250+10+15,150+10-14-25-12,200+10-45);
+        scroll2.setBounds(frame.getWidth()-155,frame.getHeight()-225, 109, 165);
 
-        scroll2.setPreferredSize(new Dimension(150+40,400));
+        scroll2.setPreferredSize(new Dimension(190,400));
         scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        frame.getLayeredPane().add(scroll2,0);
+        frame.getLayeredPane().add(scroll2,new Integer(1));
 
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                frame1.setLocation(frame1.getX(),frame.getHeight()-250);
                frame2.setLocation(frame.getWidth()-180,frame.getHeight()-250);
-               scroll1.setLocation(0+7,frame.getHeight()-250+10);
-               scroll2.setLocation(frame.getWidth()-180+20+5,frame.getHeight()-250+10+15);
+               scroll1.setLocation(7,frame.getHeight()-240);
+               scroll2.setLocation(frame.getWidth()-155,frame.getHeight()-225);
             }
         });
 
@@ -250,7 +250,7 @@ public class GameGUI {
 
         Image player1=  PLAYER1_IMAGE.getScaledInstance(36,50,Image.SCALE_SMOOTH);
         Image player2 = PLAYER2_IMAGE.getScaledInstance(36, 50, Image.SCALE_SMOOTH);
-        Image wall = WALL_IMAGE.getScaledInstance(TILE_WIDTH, TILE_HEIGHT + 8, Image.SCALE_SMOOTH);
+        Image wall = WALL_IMAGE.getScaledInstance(TILE_WIDTH, 58, Image.SCALE_SMOOTH);
         Image star = STAR_IMAGE.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
         Image speedlimiter = SPEEDLIMITER_IMAGE.getScaledInstance(60, 68, Image.SCALE_DEFAULT);
         JLabel item;
@@ -267,26 +267,24 @@ public class GameGUI {
                 item.setVerticalTextPosition(SwingConstants.TOP);
                 item.setToolTipText("سرعتگیر دارای ارزش "+limit);
                 ToolTipManager.sharedInstance().setInitialDelay(50);
-                item.setBounds((isoX ),isoY-27, TILE_WIDTH, TILE_HEIGHT+12);
+                item.setBounds((isoX ),isoY-27, TILE_WIDTH, 62);
                 layer=4;
                 break;
             case "P1":
                 item=new PlayerIcon(i,j,new ImageIcon(player1),1);
                 P1= (PlayerIcon) item;
                 item.setBounds((isoX ),isoY-13 , TILE_WIDTH, TILE_HEIGHT);
-
                 layer=6;
                 break;
             case "P2":
                 item=new PlayerIcon(i,j,new ImageIcon(player2),2);
                 P2= (PlayerIcon) item;
                 item.setBounds((isoX ),isoY-13, TILE_WIDTH, TILE_HEIGHT);
-
                 layer=5;
                 break;
             case "Wall":
                 item=new JLabel(new ImageIcon(wall));
-                item.setBounds((isoX ),isoY-8, TILE_WIDTH, TILE_HEIGHT+8);
+                item.setBounds((isoX ),isoY-8, TILE_WIDTH, 58);
                 layer=2;
                 break;
             default:
@@ -327,6 +325,45 @@ public class GameGUI {
         int isoY = (cartX + cartY) / 2;
         int isoX = (cartX - cartY);
         return new Point(isoX+faseleOfoghi,isoY+faseleAmoodi);
+    }
+    static void checkWin(){
+        if(Star.getCount()==0) {
+            layeredPane.removeAll();
+            layeredPane.setOpaque(true);
+            layeredPane.repaint();
+            Player P1= Player.getP1();
+            Player P2= Player.getP2();
+            if (P1.getScore() == P2.getScore()){
+                Image drawImage = new ImageIcon("src/graphic/image/draw.gif").getImage().getScaledInstance(frame.getWidth(), frame.getHeight(), Image.SCALE_DEFAULT);
+                JLabel draw = new JLabel(new ImageIcon(drawImage));
+                draw.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+
+                JLabel text=new JLabel("DRAW!");
+                text.setHorizontalTextPosition(SwingConstants.CENTER);
+                text.setForeground(Color.green);
+                text.setFont(new Font(text.getFont().getName(),Font.BOLD,100));
+                text.setBounds((frame.getWidth()-350)/2,50,500,100);
+                frame.getLayeredPane().add(draw, new Integer(5));
+                frame.getLayeredPane().add(text, new Integer(6));
+            }else{
+                Image winImage = new ImageIcon("src/graphic/image/win.gif").getImage().getScaledInstance(600, 400, Image.SCALE_DEFAULT);
+                JLabel win = new JLabel(new ImageIcon(winImage));
+                win.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+                win.setOpaque(true);
+                win.setBackground(new Color(49, 49, 49));
+                frame.getLayeredPane().add(win, new Integer(5));
+                JLabel text=new JLabel();
+                if(P1.getScore()>P2.getScore()){
+                    text.setText("P1");
+                }else
+                    text.setText("P2");
+                text.setHorizontalTextPosition(SwingConstants.CENTER);
+                text.setForeground(Color.red);
+                text.setFont(new Font(text.getFont().getName(),Font.BOLD,85));
+                text.setBounds((frame.getWidth()/2)-50,(frame.getHeight()/2)-35,500,100);
+                frame.getLayeredPane().add(text, new Integer(6));
+            }
+        }
     }
 }
 
@@ -464,6 +501,8 @@ class TilesMouseListener implements MouseListener {
         GameGUI.printLimits();
         GameGUI.updateScores();
         GameGUI.UpdateTurnInfo();
+        GameGUI.checkWin();
+
     }
 
     @Override
