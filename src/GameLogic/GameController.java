@@ -196,7 +196,10 @@ public class GameController {
     }
 
     public static boolean boardDimensionValidator(int width,int height){
-        return width>=2 && height>=2 ;
+        if (width>=2 && width<=50  && height>=2 && height<=50)
+             return true;
+        else
+            return false;
     }
 
     public static boolean speedLimiterCheck(int xGoal, int yGoal , Player turn ){
