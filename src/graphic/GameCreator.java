@@ -1,7 +1,6 @@
 package graphic ;
 
 import GameLogic.*;
-import javax.imageio.ImageIO; /* A class containing methods for locating ImageReaders and ImageWriters */
 import javax.swing.*; /* A class for giving us the ability to use SWING graphic options */
 import javax.swing.border.Border; /*To put a border around a JComponent*/
 import javax.swing.border.CompoundBorder;
@@ -9,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*; /* For dealing with different types of events fired by AWT components*/
-import java.io.IOException; /*Java's representation of a file or directory path name*/
 
 public class GameCreator {
     static JFrame frame;
@@ -37,45 +35,56 @@ public class GameCreator {
         frame.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
         frame.setLocation( 400 , 150 );
 
-        /* "getClass().getResource" used to shorten the image's path address */
-        /* in this way , using GIF format images for the objects became possible */
-        TILE_IMAGE = new ImageIcon(getClass().getResource("image/ISOgrass2.png")).getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT,Image.SCALE_SMOOTH);
-        SElECTED_IMAGE = new ImageIcon(getClass().getResource("image/selected-grass.png")).getImage().getScaledInstance(TILE_WIDTH, TILE_HEIGHT,Image.SCALE_SMOOTH);
-        WALL_IMAGE = new ImageIcon(getClass().getResource("image/wall.png")).getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT+8,Image.SCALE_SMOOTH);
-        try {
-            PLAYER1_IMAGE= ImageIO.read(getClass().getResource("image/p1.png"));
-            PLAYER2_IMAGE= ImageIO.read(getClass().getResource("image/p2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        STAR_IMAGE = new ImageIcon(GameCreator.class.getResource("image/star-coin.gif")).getImage();
-        SPEEDLIMITER_IMAGE = new ImageIcon(getClass().getResource("image/speedlimiter.gif")).getImage();
+        /* load images */
+        TILE_IMAGE = new ImageIcon("src/graphic/image/ISOgrass2.png").getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT,Image.SCALE_SMOOTH);
+        SElECTED_IMAGE = new ImageIcon("src/graphic/image/selected-grass.png").getImage().getScaledInstance(TILE_WIDTH, TILE_HEIGHT,Image.SCALE_SMOOTH);
+        WALL_IMAGE = new ImageIcon("src/graphic/image/wall.png").getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT+8,Image.SCALE_SMOOTH);
+        PLAYER1_IMAGE= new ImageIcon("src/graphic/image/p1.png").getImage();
+        PLAYER2_IMAGE= new ImageIcon("src/graphic/image/p2.png").getImage();
+        STAR_IMAGE = new ImageIcon("src/graphic/image/star-coin.gif").getImage();
+        SPEEDLIMITER_IMAGE = new ImageIcon("src/graphic/image/speedlimiter.gif").getImage();
 
+        setBoardDimension();
+        createLayeredPane();
+        createBoard();
+        createMenu();
+
+        frame.setSize(( Cols + 2 ) * TILE_WIDTH , 550 );
+        frame.setVisible( true );
+    }
+
+    private void setBoardDimension() {
         /* Creating text fields to receive the dimention of the game board */
         JTextField xField = new JTextField(2);
         JTextField yField = new JTextField(2);
-        JPanel myPanel = new JPanel();
-        myPanel.add(new JLabel("x:"));
-        myPanel.add(xField);
-        myPanel.add(Box.createHorizontalStrut(15)); /* A spacer */
-        myPanel.add(new JLabel("y:"));
-        myPanel.add(yField);
+        JPanel inputDialog = new JPanel();
+        inputDialog.add(new JLabel("x:"));
+        inputDialog.add(xField);
+        inputDialog.add(Box.createHorizontalStrut(15)); /* A spacer */
+        inputDialog.add(new JLabel("y:"));
+        inputDialog.add(yField);
 
-        while (true) {    /* To check if the input is valid or not (It prevents unwanted entering STRINGS)! */
+        while (true) {
+            JOptionPane.showConfirmDialog(null, inputDialog, "ابعاد صفحه را وارد کنید", JOptionPane.DEFAULT_OPTION);
+            /* To check if the input is valid or not (It prevents unwanted entering STRINGS)! */
             if((xField.getText().matches("[0-9]+") && yField.getText().matches("[0-9]+"))){
                 Rows = Integer.parseInt(xField.getText());
                 Cols = Integer.parseInt(yField.getText());
-                if(GameController.boardDimensionValidator(Cols,Rows)){    /* Checks if the the dimentions are more than 2 or not */
+                if(GameController.boardDimensionValidator(Cols,Rows)){    /* Check dimensions>=2 and dimensions<=50  */
                     break;
-                }
-            }
-            int result = JOptionPane.showConfirmDialog(null, myPanel, "ابعاد صفحه را وارد کنید", JOptionPane.DEFAULT_OPTION);
+                }else
+                    JOptionPane.showMessageDialog(null, "اعداد باید بین بازه 2 تا50 باشند","ورودی نامعتبر!",JOptionPane.ERROR_MESSAGE);
+            }else
+                    JOptionPane.showMessageDialog(null, "شما فقط مجاز به واردکردن اعداد مثبت هستید","ورودی نامعتبر!",JOptionPane.ERROR_MESSAGE);
         }
 
         Game.setBoard(new Board(Cols, Rows));
-        faseleOfoghi = Rows * (TILE_HEIGHT - 1);
+    }
 
-        layeredPane= new JLayeredPane();
+    private void createLayeredPane(){
+        layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null);
+        faseleOfoghi = Rows * (TILE_HEIGHT - 1);
         int scrollHeight = ((Rows+Cols) * (TILE_HEIGHT )/2) + faseleAmoodi;
         int scrollWidth = faseleOfoghi + Cols * (TILE_HEIGHT ) + 80;
         BACKGROUND_IMAGE = new ImageIcon("src/graphic/image/background.jpg").getImage().getScaledInstance(scrollWidth+500,scrollHeight+400,Image.SCALE_SMOOTH);
@@ -85,41 +94,45 @@ public class GameCreator {
         layeredPane.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                Image scaledBackground = BACKGROUND_IMAGE.getScaledInstance(e.getComponent().getWidth(),e.getComponent().getHeight(),Image.SCALE_SMOOTH);
+                Component component = e.getComponent();
+                int width = component.getWidth();
+                int height = component.getHeight();
+                Image scaledBackground = BACKGROUND_IMAGE.getScaledInstance(width,height,Image.SCALE_SMOOTH);
                 background.setIcon(new ImageIcon(scaledBackground));
-                background.setBounds(0,0,e.getComponent().getWidth(),e.getComponent().getHeight());
+                background.setBounds(0,0,width,height);
             }
         });
-
         layeredPane.add(background,new Integer(0));
-        layeredPane.setLayout(null);
 
         /* Providing a scrollable view of a lightweight component */
-        JScrollPane jsp= new JScrollPane(layeredPane);
-
-        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollPane = new JScrollPane(layeredPane);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         layeredPane.setPreferredSize(new Dimension(scrollWidth,scrollHeight));
+        frame.getContentPane().add(scrollPane,BorderLayout.CENTER);
 
-        frame.getContentPane().add(jsp,BorderLayout.CENTER);
+    }
+
+    private void createBoard() {
         Icon imgIcon = new ImageIcon(TILE_IMAGE);
-
         /* preparing game board and put the game board on the first layer */
         for ( int i = 0 ; i <Rows ; i++ ) {
             for ( int j = 0 ; j < Cols ; j++ ) {
                 int isoX , isoY ;
                 JLabel label;
-                int cartX = j * ( TILE_HEIGHT );
-                int cartY = i * ( TILE_HEIGHT );
+                int cartX = j * TILE_HEIGHT ;
+                int cartY = i * TILE_HEIGHT ;
                 isoX = ( cartX - cartY );
                 isoY = ( cartX + cartY ) / 2;
                 label = new JLabel( imgIcon );
-                label.setBounds(( faseleOfoghi + isoX ),isoY + faseleAmoodi , TILE_WIDTH , TILE_HEIGHT ); /* (x , y , length , hight ) */
+                label.setBounds( (isoX + faseleOfoghi) ,(isoY + faseleAmoodi) , TILE_WIDTH , TILE_HEIGHT ); /* (x , y , length , height ) */
                 label.addMouseListener(new TileListener( i , j ));
                 layeredPane.add(label,new Integer( 1 ));
             }
         }
+    }
 
+    private void createMenu() {
         /* These are about the game Designing section ( while the game is not started yet ! ) */
         JPanel menu= new JPanel();
         menu.setLayout(new BoxLayout( menu , BoxLayout.Y_AXIS ));
@@ -137,22 +150,25 @@ public class GameCreator {
         Icon wall = new ImageIcon(WALL_IMAGE.getScaledInstance(buttonsWidth,buttonsHeight,Image.SCALE_SMOOTH)) ;
 
         /* Adding needed buttons to our menu ( our objects that should be put , on the game board )  */
-        menu.add(CreateButton("دیوار", wall ,"wall" ));
-        menu.add(CreateButton("ستاره" , starIcon ,"star" ));
-        menu.add(CreateButton("سرعتگیر" , speedlimiter ,"speedlimiter" ));
-        menu.add(CreateButton("بازیکن 1" , player1 ,"p1" ));
-        menu.add(CreateButton("بازیکن 2", player2 ,"p2" ));
-        JButton start = CreateButton("", new ImageIcon("src/graphic/image/startgame.gif") ,"");
-        start.setEnabled(false);
-        start.addActionListener(e -> {
-            if (start.isEnabled())
+        JButton wallButton = CreateButton("دیوار", wall ,"wall" );
+        JButton starButton = CreateButton("ستاره" , starIcon ,"star" );
+        JButton speedLimiterButton = CreateButton("سرعتگیر" , speedlimiter ,"speedlimiter" );
+        JButton p1Button = CreateButton("بازیکن 1" , player1 ,"p1" );
+        JButton p2Button = CreateButton("بازیکن 2", player2 ,"p2" );
+        menu.add(wallButton);
+        menu.add(starButton);
+        menu.add(speedLimiterButton);
+        menu.add(p1Button);
+        menu.add(p2Button);
+        JButton startButton = CreateButton("", new ImageIcon("src/graphic/image/startgame.gif") ,"");
+        startButton.setEnabled(false);
+        startButton.addActionListener(e -> {
+            if (startButton.isEnabled())
                 new GameGUI();
         });
-        menu.add(start);
-
-        frame.setSize(( Cols + 2 ) * TILE_WIDTH , 550 );
-        frame.setVisible( true );
+        menu.add(startButton);
     }
+
 
     private JButton CreateButton( String nameFa , Icon icon , String nameEn ){
         JButton button;
@@ -162,7 +178,7 @@ public class GameCreator {
           else {
             button = new JButton( nameFa , icon );
         }
-        button.setSelected( true );
+        //button.setSelected( true );
         button.setBackground( Color.WHITE );
         button.setSize(new Dimension(70 ,70 ));
 
@@ -173,38 +189,34 @@ public class GameCreator {
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.TOP );
 
-        button.addMouseListener(new MouseListener() {
+        button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getComponent().isEnabled()) {
+                Component button = e.getComponent();
+                if(button.isEnabled()) {
                     selected = nameEn;
-                    for (Component component : e.getComponent().getParent().getComponents()) {
+                    Container menu = button.getParent();
+                    for (Component component : menu.getComponents()) {
                         component.setBackground( Color.white );
                         component.setForeground( Color.black );
                     }
-                    e.getComponent().setBackground( Color.blue );
-                    e.getComponent().setForeground( Color.white ); /* Setting the text color */
+                    button.setBackground( Color.blue );
+                    button.setForeground( Color.white ); /* Setting the text color */
                 }
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
             public void mouseEntered(MouseEvent e) {
-                ((JButton)e.getComponent()).setText(nameFa);
+               JButton jButton = (JButton) e.getComponent();
+               jButton.setText(nameFa);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (icon!=null) ((JButton)e.getComponent()).setText("");
+                if (icon!=null) {
+                    JButton jButton = (JButton) e.getComponent();
+                    jButton.setText("");
+                }
             }
         });
         return button;
@@ -228,7 +240,7 @@ public class GameCreator {
         Image speedlimiter = SPEEDLIMITER_IMAGE.getScaledInstance(60 , 68 , Image.SCALE_DEFAULT );
 
         JLabel item;
-        Container container= GameCreator.frame.getContentPane();
+        Container container= frame.getContentPane();
         JPanel menu = (JPanel) container.getComponent(1);
         int layer; /* To put different objects on different layers!  */
 
@@ -249,7 +261,7 @@ public class GameCreator {
             case "speedlimiter":
                 item = new JLabel( new ImageIcon( speedlimiter ));
                 item.setVerticalTextPosition( SwingConstants.TOP );
-                item.setToolTipText( "" + limit );
+                item.setToolTipText(String.valueOf(limit));
                 ToolTipManager.sharedInstance().setInitialDelay(50); /* The text displays when the cursor lingers over the component. */
                 item.setBounds( (faseleOfoghi + isoX ) , isoY - 27 + faseleAmoodi , TILE_WIDTH , TILE_HEIGHT + 12 );
                 layer = 4;
@@ -296,22 +308,26 @@ public class GameCreator {
             @Override
             public void mouseClicked(MouseEvent e) {
                 /* If the user clicks on a object on the board , it will be removed */
-                GameCreator.layeredPane.remove(e.getComponent());
-                GameCreator.layeredPane.repaint();
+                layeredPane.remove(e.getComponent());
+                layeredPane.repaint();
                 Game.getBoardInstance().setBoard(null,i,j);
                 checkStartPermission(); //if  star or player is removed, start button will be disabled;
             }
         });
-        layeredPane.add(item, layer,Cols-j-1);
+        int index = Cols-j-1;
+        layeredPane.add(item, layer,index);
     }
 
     static void checkStartPermission(){
-        Container container= GameCreator.frame.getContentPane();
+        Container container= frame.getContentPane();
         JPanel menu = (JPanel) container.getComponent(1);
-        if(!menu.getComponent(3).isEnabled() && !menu.getComponent(4).isEnabled() && Star.getCount()>0){
-            menu.getComponent(5).setEnabled(true);
+        Component P1Button=menu.getComponent(3);
+        Component P2Button=menu.getComponent(4);
+        Component startButton=menu.getComponent(5);
+        if(!P1Button.isEnabled() && !P2Button.isEnabled() && Star.getCount()>0){
+            startButton.setEnabled(true);
         }else
-            menu.getComponent(5).setEnabled(false);
+            startButton.setEnabled(false);
     }
 
     public static void main(String[] args) {
@@ -320,8 +336,9 @@ public class GameCreator {
 }
 
 class TileListener implements MouseListener{
-    private int i;
-    private int j;
+    private final int i;
+    private final int j;
+
     public TileListener(int i, int j){
         this.i=i;
         this.j=j;
@@ -354,7 +371,8 @@ class TileListener implements MouseListener{
                             GameCreator.drawItem( i , j , "speedlimiter" , limit );
                             board.setBoard( new SpeedLimiter( i , j , limit) , i , j );
                         }
-                    }
+                    }else if(input!=null)
+                        JOptionPane.showMessageDialog(null, "شما فقط مجاز به واردکردن اعداد مثبت هستید","ورودی نامعتبر!",JOptionPane.WARNING_MESSAGE);
                     break;
 
                 case "p1":
