@@ -1,24 +1,26 @@
 package GameLogic;
 
 import java.util.ArrayList;
+import java.awt.Point;
 
 public class Player {
+
     private static Player p1 = null;
     private static Player p2 = null;
     private int score = 0;
     private ArrayList <Integer> limit = new ArrayList<>();
-    private Coordinates point;
+    private Point point;
 
     public ArrayList<Integer> getLimit() {
         return limit;
     }
 
-    public Coordinates getPointOfPlayer() {
+    public Point getPointOfPlayer() {
         return point;
     }
 
     private Player() {
-
+        //kind of singleton pattern for creating just 2 player object
     }
 
     public int getScore() {
@@ -34,7 +36,7 @@ public class Player {
     }
 
     public void setPointOfPlayer( int x, int y ) {
-        this.point = new Coordinates(x, y);
+        this.point = new Point(x, y);
     }
 
     /* Just ONE p1 can be available */
