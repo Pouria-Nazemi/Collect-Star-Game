@@ -4,6 +4,9 @@ import GameLogic.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+
 import static graphic.GameCreator.*;
 
 public class GameGUI {
@@ -62,21 +65,21 @@ public class GameGUI {
 
     /* Making some icons to show the scores to the players an keep them UP-TO-DATE ! */
     private void createScoreboards(){
-/*    /// in baraye load font az folder. emrooz okayesh mikonam ///
+        Font font = null;
         try {
-           Font font= Font.createFont(Font.TRUETYPE_FONT, new File("A.ttf"));
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("src/graphic/font/calibrib.ttf"));
+        } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-*/
 
         TurnInfo = new JLabel(" نوبت بازیکن 1  - با کلیک روی یکی از خانه ها حرکت کنید ",SwingConstants.CENTER);
         TurnInfo.setBounds((frame.getWidth()-300)/2,0,300,30);
         TurnInfo.setForeground(new Color(11, 86, 1));
-
         frame.getLayeredPane().add(TurnInfo,new Integer(4));
+        Image turnInfoImg = new ImageIcon("src/graphic/image/cadr.png").getImage().getScaledInstance(300,30,Image.SCALE_SMOOTH);
+        JLabel turnInfoBackground=new JLabel(new ImageIcon(turnInfoImg));
+        turnInfoBackground.setBounds((frame.getWidth()-300)/2,0,300,30);
+        frame.getLayeredPane().add(turnInfoBackground,new Integer(3));
 
         /* An icon to show the player scores during the game */
         ImageIcon blueCircle = new ImageIcon("src/graphic/image/BlueCircle.gif");
@@ -85,11 +88,11 @@ public class GameGUI {
 
         JLabel P1Lable = new JLabel("بازیکن یک");
         P1Lable.setBounds(20,0,150,150);
-        P1Lable.setFont(new Font("Calibri",Font.BOLD,16));
+        P1Lable.setFont(font.deriveFont(16f));
 
         ScoreP1 = new JLabel("0");
         ScoreP1.setBounds(40,0,150,90);
-        ScoreP1.setFont(new Font("Calibri",Font.BOLD,40));
+        ScoreP1.setFont(font.deriveFont(40f));
         ScoreP1.setForeground(Color.yellow);
 
         /* Adding those icons to the frame in different layers */
@@ -104,11 +107,11 @@ public class GameGUI {
 
         JLabel P2Lable = new JLabel("بازیکن دو");
         P2Lable.setBounds(frame.getWidth()-95,0,150,150);
-        P2Lable.setFont(new Font("Calibri",Font.BOLD,16));
+        P2Lable.setFont(font.deriveFont(16f));
 
         ScoreP2 = new JLabel("0");
         ScoreP2.setBounds(frame.getWidth()-80,0,150,90);
-        ScoreP2.setFont(new Font("Calibri",Font.BOLD,40));
+        ScoreP2.setFont(font.deriveFont(40f));
         ScoreP2.setForeground(Color.yellow);
 
         frame.getLayeredPane().add(circleP2,new Integer(7));
@@ -122,6 +125,7 @@ public class GameGUI {
                 P2Lable.setLocation(frame.getWidth()-95,P2Lable.getY());
                 ScoreP2.setLocation(frame.getWidth()-80,ScoreP2.getY());
                 TurnInfo.setLocation((frame.getWidth()-300)/2,0);
+                turnInfoBackground.setLocation((frame.getWidth()-300)/2,0);
             }
         });
 
