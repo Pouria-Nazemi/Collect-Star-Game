@@ -29,6 +29,9 @@ public class Player {
         this.score++;
     }
 
+    public void resetScore(){
+        score=0;
+    }
 
     public void setPointOfPlayer( int x, int y ) {
         this.point = new Coordinates(x, y);
