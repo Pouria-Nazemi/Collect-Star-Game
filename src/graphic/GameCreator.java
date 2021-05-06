@@ -33,7 +33,6 @@ public class GameCreator {
         frame = new JFrame("Creating Game");
         /* to close the program automatically after pushing x bottom */
         frame.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
-        frame.setLocation( 400 , 150 );
 
         /* load images */
         TILE_IMAGE = new ImageIcon("src/graphic/image/ISOgrass2.png").getImage().getScaledInstance(TILE_WIDTH,TILE_HEIGHT,Image.SCALE_SMOOTH);
@@ -49,7 +48,8 @@ public class GameCreator {
         createBoard();
         createMenu();
 
-        frame.setSize(( Cols + 2 ) * TILE_WIDTH , 550 );
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setSize(600 , 550 );
         frame.setVisible( true );
     }
 
