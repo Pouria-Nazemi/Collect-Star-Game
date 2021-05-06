@@ -1,9 +1,12 @@
 package GameLogic;
 
+import java.awt.Point;
+
 public class Wall {
-    private Coordinates point;
+
+    private Point point;
 
     public Wall( int x , int y ) {
-        this.point = new Coordinates( x , y );
+        this.point = new Point( x , y );
     } 
 }

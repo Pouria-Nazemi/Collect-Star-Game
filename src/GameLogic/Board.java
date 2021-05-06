@@ -2,31 +2,39 @@ package GameLogic;
 import java.util.Scanner;
 
 public class Board {
+
     private int width;
     private int height;
     private Object[][] Board; /* An array for the beads that helps us be more in touch with the real OOP world! */
 
     public Board() {
-       // gamePreparation();
+       // gamePreparation();  //this was used for console version of the game
     }
 
     public Board(int width,int height){
       this.Board = new Object[height][width];
     }
 
-    public void setWidth(int width) {
+    /*public void setWidth(int width) {
         this.width = width;
-    }
+    }*/
 
-    public void setHeight(int height) {
+    /*public void setHeight(int height) {
         this.height = height;
-    }
+    }*/
+
+    //for setting an object in the defined element  of array
     public void setBoard(Object obj,int x , int y) {
         this.Board[x][y] = obj;
     }
 
+    /* With this method we can just search on a specific place on the board and this help us have a more efficient and faster accessibility to the array */
+    public Object getBoardElement(int x,int y){
+        return Board[x][y];
+    }
+
     /* This method is not needed for the graphic version */
-    private void gamePreparation(){
+    /*private void gamePreparation(){
         System.out.println("Enter the dimension of the board of the game ");
         Scanner input = new Scanner(System.in);
         System.out.print("Width: ");
@@ -93,11 +101,10 @@ public class Board {
         Y = input.nextInt()-1;
         Player.getP2().setPointOfPlayer(X,Y);
         this.setBoard(Player.getP2(),X,Y);
-    }
+    }*/
 
-
-    /* This method was used to show the board in the first version of this project  */
-    public void showBoard(){
+    /* This method was used to show the board in the console version of this project  */
+   /* public void showBoard(){
         for (int row = 0; row < this.height; row++) {
             for(int i = 0;i<2*this.width;i++){
                 System.out.print("-");
@@ -137,10 +144,7 @@ public class Board {
             }
             System.out.println();
         }
-    }
+    }*/
 
-    /* With this method we can just search on a specific place on the board and this help us have a more efficient and faster search on the array */
-    public Object getBoardElement(int x,int y){
-        return Board[x][y];
-    }
+
 }
