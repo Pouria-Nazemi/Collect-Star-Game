@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*; /* For dealing with different types of events fired by AWT components*/
 
 public class GameCreator {
+
     static JFrame frame;
     static JLayeredPane layeredPane;
     static String selected="";
@@ -27,7 +28,6 @@ public class GameCreator {
     static Image PLAYER1_IMAGE;
     static Image PLAYER2_IMAGE;
     static Image BACKGROUND_IMAGE;
-
 
     public GameCreator(){
         frame = new JFrame("Creating Game");

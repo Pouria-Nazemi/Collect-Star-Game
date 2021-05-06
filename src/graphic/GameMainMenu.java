@@ -5,20 +5,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GameMainMenu implements MouseListener {
-    JButton startJB;
-    JButton aboutJB;
-    JFrame menuFrame;
-    ImageIcon startIcon;
-    ImageIcon aboutIcon;
-    ImageIcon aboutIconSelected;
-    ImageIcon startIconSelected;
-    static MusicPlayer music;
+
+    private JButton startJB;
+    private JButton aboutJB;
+    private JFrame menuFrame;
+    private ImageIcon startIcon;
+    private ImageIcon aboutIcon;
+    private ImageIcon aboutIconSelected;
+    private ImageIcon startIconSelected;
+    private static MusicPlayer music;
 
 
     /* Preparing game menu */
     public GameMainMenu() {
+
         menuFrame = new JFrame("Main Menu");
-        menuFrame.setLocation(250,150);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        menuFrame.setLocation((screenSize.width-800)/2,(screenSize.height -500)/2);
         menuFrame.setResizable(false);
 
         JPanel menuJP = new JPanel();
@@ -46,7 +49,6 @@ public class GameMainMenu implements MouseListener {
         aboutJB.setBounds(256,365,327,76);
         /* Adds the specified mouse listener to receive mouse events from this component */
         aboutJB.addMouseListener(this);
-        /* Adding action listener later */
         aboutJB.setBorder(null);
 
         menuJP.add(startJB,0);
@@ -59,7 +61,6 @@ public class GameMainMenu implements MouseListener {
         menuFrame.setSize(800,500);
         menuFrame.setVisible(true);
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -103,20 +104,24 @@ public class GameMainMenu implements MouseListener {
         }
     }
 
-    /* Preparing game menu */
+    /* Preparing loading page */
     /* With using a Jpanel and a Jlable */
     public void loading(){
         JFrame loadFrame = new JFrame("THE GAME IS LOADING ... ");
-        loadFrame.setLocation(250,0);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        loadFrame.setLocation((screenSize.width-1000)/2,(screenSize.height -800)/2);
         loadFrame.setLayout(new BorderLayout());
         loadFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JPanel panel = new JPanel() ;
         Image LOADING = new ImageIcon(GameCreator.class.getResource("image/load.gif")).getImage();
         Image loading = LOADING.getScaledInstance(1000, 800, Image.SCALE_DEFAULT);
+
         JLabel item = new JLabel(new ImageIcon(loading));
         panel.setBounds(0, 0, 1000, 800);
         panel.setBackground(Color.black);
         panel.add(item);
+
         loadFrame.add(panel);
         loadFrame.setSize(1000, 800);
         loadFrame.setLayout(null);
@@ -126,6 +131,7 @@ public class GameMainMenu implements MouseListener {
             loadFrame.setVisible(false);
             new GameCreator();
         });
+
         timer.setRepeats(false);
         timer.start();
     }
