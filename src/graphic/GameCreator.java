@@ -329,10 +329,6 @@ public class GameCreator {
         }else
             startButton.setEnabled(false);
     }
-
-    public static void main(String[] args) {
-        new GameMainMenu();
-    }
 }
 
 class TileListener implements MouseListener{

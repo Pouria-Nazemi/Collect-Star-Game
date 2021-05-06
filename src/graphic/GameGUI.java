@@ -301,6 +301,7 @@ public class GameGUI {
                 item = new PlayerIcon(i,j,new ImageIcon(player1),1);
                 P1 = (PlayerIcon) item;
                 item.setToolTipText("بازیکن یک");
+                ToolTipManager.sharedInstance().setInitialDelay(50);
                 item.setBounds((isoX ),isoY-13 , TILE_WIDTH, TILE_HEIGHT);
                 layer = 6;
                 break;
@@ -308,6 +309,7 @@ public class GameGUI {
                 item = new PlayerIcon(i,j,new ImageIcon(player2),2);
                 P2 = (PlayerIcon) item;
                 item.setToolTipText("بازیکن دو");
+                ToolTipManager.sharedInstance().setInitialDelay(50);
                 item.setBounds((isoX ),isoY-13, TILE_WIDTH, TILE_HEIGHT);
                 layer = 5;
                 break;

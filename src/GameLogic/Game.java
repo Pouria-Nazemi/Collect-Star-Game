@@ -1,5 +1,7 @@
 package GameLogic;
 
+import graphic.GameMainMenu;
+
 public class Game {
 
     public static Board board;
@@ -15,6 +17,7 @@ public class Game {
 
     /* This was used on the first version of the game - while we were not working on graphics */
     public static void main(String[] args) {
+        new GameMainMenu();
 
     }
 }
