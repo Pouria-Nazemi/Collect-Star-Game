@@ -13,7 +13,7 @@ public class GameMainMenu implements MouseListener {
     private ImageIcon aboutIcon;
     private ImageIcon aboutIconSelected;
     private ImageIcon startIconSelected;
-    private static MusicPlayer music;
+    private  MusicPlayer music;
 
 
     /* Preparing game menu */
@@ -36,7 +36,9 @@ public class GameMainMenu implements MouseListener {
         aboutIcon = new ImageIcon(GameCreator.class.getResource("image/about button.png"))/*.getImage().getScaledInstance(331,70,Image.SCALE_SMOOTH)*/;
         startIconSelected = new ImageIcon(GameCreator.class.getResource("image/start button selected.png"));
         aboutIconSelected = new ImageIcon(GameCreator.class.getResource("image/about button selected.png"));
-        //music = new MusicPlayer("D:\\Sleep Away.wav");
+
+        music = new MusicPlayer("src\\graphic\\music\\menuMusic.wav");
+        music.loopEnable();
 
         /* Start bottom */
         startJB = new JButton(startIcon);
@@ -65,7 +67,7 @@ public class GameMainMenu implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getSource() == startJB){
-            //music.stopMusic();
+            music.stopMusic();
             menuFrame.setVisible(false);
             loading();
         }
@@ -105,8 +107,9 @@ public class GameMainMenu implements MouseListener {
     }
 
     /* Preparing loading page */
-    /* With using a Jpanel and a Jlable */
+    /* With using a Jpanel and a Jlabel */
     public void loading(){
+        //MusicPlayer music = new MusicPlayer("C:\\Users\\User7\\Desktop\\gameLoading.wav");
         JFrame loadFrame = new JFrame("THE GAME IS LOADING ... ");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         loadFrame.setLocation((screenSize.width-1000)/2,(screenSize.height -800)/2);
@@ -129,6 +132,7 @@ public class GameMainMenu implements MouseListener {
 
         Timer timer = new Timer(4500, e -> {
             loadFrame.setVisible(false);
+            //music.stopMusic();
             new GameCreator();
         });
 

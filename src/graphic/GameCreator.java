@@ -28,6 +28,7 @@ public class GameCreator {
     static Image PLAYER1_IMAGE;
     static Image PLAYER2_IMAGE;
     static Image BACKGROUND_IMAGE;
+    private static MusicPlayer music;
 
     public GameCreator(){
         frame = new JFrame("Creating Game");
@@ -42,6 +43,9 @@ public class GameCreator {
         PLAYER2_IMAGE= new ImageIcon("src/graphic/image/p2.png").getImage();
         STAR_IMAGE = new ImageIcon("src/graphic/image/star-coin.gif").getImage();
         SPEEDLIMITER_IMAGE = new ImageIcon("src/graphic/image/speedlimiter.gif").getImage();
+
+        music = new MusicPlayer("src\\graphic\\music\\gameBackgroundSound.wav");
+        music.loopEnable();
 
         setBoardDimension();
         createLayeredPane();
@@ -163,8 +167,10 @@ public class GameCreator {
         JButton startButton = CreateButton("", new ImageIcon("src/graphic/image/startgame.gif") ,"");
         startButton.setEnabled(false);
         startButton.addActionListener(e -> {
-            if (startButton.isEnabled())
+            if (startButton.isEnabled()) {
+                music.stopMusic();
                 new GameGUI();
+            }
         });
         menu.add(startButton);
     }

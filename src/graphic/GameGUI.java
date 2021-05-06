@@ -18,6 +18,7 @@ public class GameGUI {
     private static JLabel TurnInfo;
     private static JTextArea listP1;
     private static JTextArea listP2;
+    private static MusicPlayer music;
 
     public GameGUI(){
         frame.getContentPane().removeAll();
@@ -30,6 +31,8 @@ public class GameGUI {
         Timer wait = new Timer(1200,e -> {
             frame.remove(loadingStart);
             createLayeredPane();
+            music = new MusicPlayer("src\\graphic\\music\\gameBackgroundSound.wav");
+            music.loopEnable();
             createBoard();
             frame.validate();
         });
@@ -335,6 +338,7 @@ public class GameGUI {
         if (item!=null){
             item.setIcon(effect);
             Timer timer = new Timer(900,e -> {
+                MusicPlayer musicNL = new MusicPlayer("src\\graphic\\music\\ObjectCollectSound.wav");
                 layeredPane.remove(item);
                 frame.repaint();
             });
@@ -371,10 +375,12 @@ public class GameGUI {
             layeredPane.repaint();
             Player P1 = Player.getP1();
             Player P2 = Player.getP2();
+            music.stopMusic();
             int frameWidth= frame.getWidth();
             int frameHeight= frame.getHeight();
             if (P1.getScore() == P2.getScore()){
                 /* A GIF file that will be shown at the end of the game */
+                MusicPlayer musicNL = new MusicPlayer("src\\graphic\\music\\drawSound.wav");
                 Image drawImage = new ImageIcon("src/graphic/image/draw.gif").getImage().getScaledInstance(frameWidth, frameHeight, Image.SCALE_DEFAULT);
                 JLabel draw = new JLabel(new ImageIcon(drawImage));
                 draw.setBounds(0, 0, frameWidth, frameHeight);
@@ -387,6 +393,7 @@ public class GameGUI {
                 frame.getLayeredPane().add(draw, new Integer(5));
                 frame.getLayeredPane().add(text, new Integer(6));
             } else {
+                MusicPlayer musicNL = new MusicPlayer("src\\graphic\\music\\win.wav");
                 Image winImage = new ImageIcon("src/graphic/image/win.gif").getImage().getScaledInstance(600, 400, Image.SCALE_DEFAULT);
                 JLabel win = new JLabel(new ImageIcon(winImage));
                 win.setBounds(0, 0, frameWidth, frameHeight);
@@ -558,7 +565,7 @@ class TilesMouseListener implements MouseListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.printf("Clicked :(%d,%d)\n", i, j);
+       // System.out.printf("Clicked :(%d,%d)\n", i, j);
         if(GameController.gettingDestinationAndMove(i,j)== true) {
             if (GameController.getTurn()==2) {
                 GameGUI.P1.moveTo(i, j);

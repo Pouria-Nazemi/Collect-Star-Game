@@ -11,7 +11,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class MusicPlayer /* extends Thread*/ {
+public class MusicPlayer {
 
     private Clip clip;
     private AudioInputStream audioInputStream;
@@ -19,7 +19,6 @@ public class MusicPlayer /* extends Thread*/ {
 
     public MusicPlayer(String filePath) {
         this.filePath = filePath;
-        //super.start();
         try {
             play(filePath);
         } catch (UnsupportedAudioFileException ex) {
@@ -31,18 +30,7 @@ public class MusicPlayer /* extends Thread*/ {
         }
     }
 
-   /* @Override
-    public void run() {
-        try {
-            play(filePath);
-        } catch (UnsupportedAudioFileException ex) {
-            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(MusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }*/
+
 
     private void play(String filePath) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         audioInputStream
@@ -52,12 +40,16 @@ public class MusicPlayer /* extends Thread*/ {
 
         clip.open(audioInputStream);
 
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
     }
 
     public void stopMusic() {
         clip.stop();
-        //super.stop();
+    }
+    public void loopEnable(){
+        this.clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 }
+
+
+
