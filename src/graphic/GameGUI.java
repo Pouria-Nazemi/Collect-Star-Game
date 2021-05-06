@@ -62,6 +62,16 @@ public class GameGUI {
 
     /* Making some icons to show the scores to the players an keep them UP-TO-DATE ! */
     private void createScoreboards(){
+/*    /// in baraye load font az folder. emrooz okayesh mikonam ///
+        try {
+           Font font= Font.createFont(Font.TRUETYPE_FONT, new File("A.ttf"));
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
+
         TurnInfo = new JLabel(" نوبت بازیکن 1  - با کلیک روی یکی از خانه ها حرکت کنید ",SwingConstants.CENTER);
         TurnInfo.setBounds((frame.getWidth()-300)/2,0,300,30);
         TurnInfo.setForeground(new Color(11, 86, 1));
@@ -125,14 +135,16 @@ public class GameGUI {
 
     /* Making some icons to show the speed limiters' value to the players an keep them UP-TO-DATE ! */
     private  void createLimitersList(){
+        int frameWidth= frame.getWidth();
+        int frameHeight= frame.getHeight();
         Image frame1Image = new ImageIcon("src/graphic/image/frame1.png").getImage().getScaledInstance(150,200,Image.SCALE_SMOOTH);
         JLabel frame1 = new JLabel(new ImageIcon(frame1Image));
-        frame1.setBounds(0,frame.getHeight()-250,150,200);
+        frame1.setBounds(0,frameHeight-250,150,200);
         frame.getLayeredPane().add(frame1,new Integer(2));
 
         Image frame2Image = new ImageIcon("src/graphic/image/frame2.png").getImage().getScaledInstance(160, 210,Image.SCALE_SMOOTH);
         JLabel frame2 = new JLabel(new ImageIcon(frame2Image));
-        frame2.setBounds(frame.getWidth()-180,frame.getHeight()-250, 160, 210);
+        frame2.setBounds(frameWidth-180,frameHeight-250, 160, 210);
         frame.getLayeredPane().add(frame2,new Integer(2));
 
         listP1 = new JTextArea();
@@ -144,7 +156,7 @@ public class GameGUI {
         JScrollPane scroll1 = new JScrollPane(listP1);
         scroll1.setAutoscrolls(false);
         scroll1.setPreferredSize(new Dimension(150,400));
-        scroll1.setBounds(7,frame.getHeight()-250+10, 136, 185);
+        scroll1.setBounds(7,frameHeight-250+10, 136, 185);
         scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scroll1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         frame.getLayeredPane().add(scroll1,new Integer(1));
@@ -157,7 +169,7 @@ public class GameGUI {
         listP2.setSize(new Dimension(150,200));
         listP2.setBorder(BorderFactory.createEmptyBorder(10,50,2,2));
         JScrollPane scroll2 = new JScrollPane(listP2);
-        scroll2.setBounds(frame.getWidth()-155,frame.getHeight()-225, 109, 165);
+        scroll2.setBounds(frameWidth-155,frameHeight-225, 109, 165);
 
         scroll2.setPreferredSize(new Dimension(190,400));
         scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -282,7 +294,7 @@ public class GameGUI {
                 item.setToolTipText("سرعتگیر دارای ارزش "+limit);
                 /* During the game , while the player moves the mouse on the speed limiter , the text will be shown for a short time */
                 ToolTipManager.sharedInstance().setInitialDelay(50);
-                item.setBounds((isoX ),isoY-27, TILE_WIDTH, 62);
+                item.setBounds((isoX ),isoY-27, TILE_WIDTH, TILE_HEIGHT+12);
                 layer = 4;
                 break;
             case "P1":
@@ -299,7 +311,7 @@ public class GameGUI {
                 break;
             case "Wall":
                 item = new JLabel(new ImageIcon(wall));
-                item.setBounds((isoX ),isoY-8, TILE_WIDTH, 58);
+                item.setBounds((isoX ),isoY-8, TILE_WIDTH, TILE_HEIGHT+8);
                 layer = 2;
                 break;
             default:
@@ -351,23 +363,25 @@ public class GameGUI {
             layeredPane.repaint();
             Player P1 = Player.getP1();
             Player P2 = Player.getP2();
+            int frameWidth= frame.getWidth();
+            int frameHeight= frame.getHeight();
             if (P1.getScore() == P2.getScore()){
                 /* A GIF file that will be shown at the end of the game */
-                Image drawImage = new ImageIcon("src/graphic/image/draw.gif").getImage().getScaledInstance(frame.getWidth(), frame.getHeight(), Image.SCALE_DEFAULT);
+                Image drawImage = new ImageIcon("src/graphic/image/draw.gif").getImage().getScaledInstance(frameWidth, frameHeight, Image.SCALE_DEFAULT);
                 JLabel draw = new JLabel(new ImageIcon(drawImage));
-                draw.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+                draw.setBounds(0, 0, frameWidth, frameHeight);
 
                 JLabel text = new JLabel("DRAW!");
                 text.setHorizontalTextPosition(SwingConstants.CENTER);
                 text.setForeground(Color.green);
                 text.setFont(new Font(text.getFont().getName(),Font.BOLD,100));
-                text.setBounds((frame.getWidth()-350)/2,50,500,100);
+                text.setBounds((frameWidth-350)/2,50,500,100);
                 frame.getLayeredPane().add(draw, new Integer(5));
                 frame.getLayeredPane().add(text, new Integer(6));
             } else {
                 Image winImage = new ImageIcon("src/graphic/image/win.gif").getImage().getScaledInstance(600, 400, Image.SCALE_DEFAULT);
                 JLabel win = new JLabel(new ImageIcon(winImage));
-                win.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+                win.setBounds(0, 0, frameWidth, frameHeight);
                 win.setOpaque(true);
                 win.setBackground(new Color(49, 49, 49));
                 frame.getLayeredPane().add(win, new Integer(5));
@@ -379,9 +393,21 @@ public class GameGUI {
                 text.setHorizontalTextPosition(SwingConstants.CENTER);
                 text.setForeground(Color.red);
                 text.setFont(new Font(text.getFont().getName(),Font.BOLD,85));
-                text.setBounds((frame.getWidth()/2)-50,(frame.getHeight()/2)-35,500,100);
+                text.setBounds((frameWidth/2)-50,(frameHeight/2)-35,500,100);
                 frame.getLayeredPane().add(text, new Integer(6));
+
+
             }
+                JButton back=new JButton("Back to Main Menu");
+                back.setBounds((frameWidth/2)-150,frameHeight-170,300,50);
+                back.setBackground(new Color(60, 132, 222));
+                back.addActionListener(e -> {
+                    frame.dispose();
+                    new GameMainMenu();
+                    Player.getP1().resetScore();
+                    Player.getP2().resetScore();
+                });
+                frame.getLayeredPane().add(back, new Integer(7));
         }
     }
 }
@@ -430,7 +456,9 @@ class PlayerIcon extends JLabel {
                 GameGUI.removeItem(point);
                 setLocation(point.x , point.y  - 13);
                 if (iStart == iGoal) {
-                    ((Timer) e.getSource()).stop();  /* Here we check , whenever the player's move is finished , it should stop moving  */
+                    Timer thisTimer= (Timer) e.getSource();
+                    thisTimer.stop();  /* Here we check , whenever the player's move is finished , it should stop moving  */
+                    GameGUI.checkWin();
                 }
                 iStart--;
             }
@@ -451,9 +479,11 @@ class PlayerIcon extends JLabel {
                 Point point=GameGUI.getCoordinate(iStart, j);
                 GameGUI.removeItem(point);
                 setLocation(point.x , point.y - 13);
-                if (iStart == iGoal)
-                    ((Timer) e.getSource()).stop();
-
+                if (iStart == iGoal){
+                    Timer thisTimer= (Timer) e.getSource();
+                    thisTimer.stop();  /* Here we check , whenever the player's move is finished , it should stop moving  */
+                    GameGUI.checkWin();
+                }
                 iStart ++;
             }
         });
@@ -473,8 +503,11 @@ class PlayerIcon extends JLabel {
                 Point point=GameGUI.getCoordinate(i, jStart);
                 GameGUI.removeItem(point);
                 setLocation(point.x , point.y  - 13);
-                if (jStart == jGoal)
-                    ((Timer) e.getSource()).stop();
+                if (jStart == jGoal){
+                    Timer thisTimer= (Timer) e.getSource();
+                    thisTimer.stop();  /* Here we check , whenever the player's move is finished , it should stop moving  */
+                    GameGUI.checkWin();
+                }
                 jStart--;
             }
         });
@@ -494,8 +527,11 @@ class PlayerIcon extends JLabel {
                 Point point = GameGUI.getCoordinate(i, jStart);
                 GameGUI.removeItem(point);
                 setLocation(point.x , point.y  - 13);
-                if (jStart == jGoal)
-                    ((Timer) e.getSource()).stop();
+                if (jStart == jGoal){
+                    Timer thisTimer= (Timer) e.getSource();
+                    thisTimer.stop();  /* Here we check , whenever the player's move is finished , it should stop moving  */
+                    GameGUI.checkWin();
+                }
                 jStart++;
             }
         });
@@ -526,7 +562,6 @@ class TilesMouseListener implements MouseListener {
         GameGUI.printLimits();
         GameGUI.updateScores();
         GameGUI.UpdateTurnInfo();
-        GameGUI.checkWin();
 
     }
 
