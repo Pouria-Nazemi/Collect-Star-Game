@@ -441,10 +441,10 @@ class PlayerIcon extends JLabel {
         this.i = i;
         this.j = j;
         this.id = id;
-        UP_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_up.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);;
-        DOWN_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_down.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);;
-        LEFT_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_left.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);;
-        RIGHT_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_right.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);;
+        UP_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_up.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);
+        DOWN_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_down.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);
+        LEFT_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_left.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);
+        RIGHT_IMAGE = new ImageIcon("src/graphic/image/P"+id+"_right.png").getImage().getScaledInstance(36,50,Image.SCALE_SMOOTH);
     }
 
 
