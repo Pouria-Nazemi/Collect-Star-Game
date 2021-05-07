@@ -337,8 +337,8 @@ public class GameGUI {
         JLabel item = (JLabel) findComponent(point);
         if (item!=null){
             item.setIcon(effect);
+            MusicPlayer musicNL = new MusicPlayer("src\\graphic\\music\\ObjectCollectSound.wav");
             Timer timer = new Timer(900,e -> {
-                MusicPlayer musicNL = new MusicPlayer("src\\graphic\\music\\ObjectCollectSound.wav");
                 layeredPane.remove(item);
                 frame.repaint();
             });
