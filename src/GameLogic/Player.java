@@ -57,8 +57,8 @@ public class Player {
         if(this.getLimit().size() != 0) {
             this.getLimit().remove(0);
         }
-        Game.getBoardInstance().setBoard( null , this.getPointOfPlayer().x , this.getPointOfPlayer().y );
+        Game.getBoardInstance().setBoardElement( null , this.getPointOfPlayer().x , this.getPointOfPlayer().y );
         this.setPointOfPlayer( xGoal , yGoal );
-        Game.getBoardInstance().setBoard( this , xGoal,yGoal );
+        Game.getBoardInstance().setBoardElement( this , xGoal,yGoal );
     }
 }

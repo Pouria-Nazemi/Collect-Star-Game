@@ -24,7 +24,7 @@ public class Board {
     }*/
 
     //for setting an object in the defined element  of array
-    public void setBoard(Object obj,int x , int y) {
+    public void setBoardElement(Object obj, int x , int y) {
         this.Board[x][y] = obj;
     }
 

@@ -4,7 +4,7 @@ import graphic.GameMainMenu;
 
 public class Game {
 
-    public static Board board;
+    private static Board board;
 
     public static void setBoard(Board board) {
         Game.board = board;

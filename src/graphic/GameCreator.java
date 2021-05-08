@@ -316,7 +316,7 @@ public class GameCreator {
                 /* If the user clicks on a object on the board , it will be removed */
                 layeredPane.remove(e.getComponent());
                 layeredPane.repaint();
-                Game.getBoardInstance().setBoard(null,i,j);
+                Game.getBoardInstance().setBoardElement(null,i,j);
                 checkStartPermission(); //if  star or player is removed, start button will be disabled;
             }
         });
@@ -357,12 +357,12 @@ class TileListener implements MouseListener{
             switch ( GameCreator.selected ) {
                 case "wall":
                     GameCreator.drawItem( i , j , "wall" );
-                    board.setBoard( new Wall( i , j ) , i , j );
+                    board.setBoardElement( new Wall( i , j ) , i , j );
                     break;
 
                 case "star":
                     GameCreator.drawItem( i , j , "star" );
-                    board.setBoard( new Star( i , j ) , i , j );
+                    board.setBoardElement( new Star( i , j ) , i , j );
                     break;
 
                 case "speedlimiter":
@@ -371,7 +371,7 @@ class TileListener implements MouseListener{
                         int limit = Integer.parseInt(input);
                         if(limit>0) {
                             GameCreator.drawItem( i , j , "speedlimiter" , limit );
-                            board.setBoard( new SpeedLimiter( i , j , limit) , i , j );
+                            board.setBoardElement( new SpeedLimiter( i , j , limit) , i , j );
                         }
                     }else if(input!=null)
                         JOptionPane.showMessageDialog(null, "شما فقط مجاز به واردکردن اعداد مثبت هستید","ورودی نامعتبر!",JOptionPane.WARNING_MESSAGE);
@@ -380,7 +380,7 @@ class TileListener implements MouseListener{
                 case "p1":
                     GameCreator.drawItem( i , j , "p1" );
                     Player.getP1().setPointOfPlayer( i , j );
-                    board.setBoard( Player.getP1() , i , j );
+                    board.setBoardElement( Player.getP1() , i , j );
                     JButton button= (JButton) menu.getComponent(3);
                     button.setBackground( Color.white );
                     button.setEnabled( false );
@@ -390,7 +390,7 @@ class TileListener implements MouseListener{
                 case "p2":
                     GameCreator.drawItem( i , j , "p2" );
                     Player.getP2().setPointOfPlayer( i , j );
-                    board.setBoard( Player.getP2() , i , j );
+                    board.setBoardElement( Player.getP2() , i , j );
                     button= (JButton) menu.getComponent(4);
                     button.setBackground( Color.white);
                     button.setEnabled( false );

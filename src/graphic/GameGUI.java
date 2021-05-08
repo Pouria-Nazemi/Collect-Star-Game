@@ -10,8 +10,8 @@ import java.io.IOException;
 import static graphic.GameCreator.*;
 
 public class GameGUI {
-    static PlayerIcon P1;
-    static PlayerIcon P2;
+    private static PlayerIcon P1;
+    private static PlayerIcon P2;
     final static ImageIcon effect = new ImageIcon("src/graphic/image/effect.gif");
     private static JLabel ScoreP1;
     private static JLabel ScoreP2;
@@ -425,6 +425,14 @@ public class GameGUI {
                 frame.getLayeredPane().add(back, new Integer(7));
         }
     }
+
+    public static PlayerIcon getP1() {
+        return P1;
+    }
+
+    public static PlayerIcon getP2() {
+        return P2;
+    }
 }
 /* In this type of 3D game boards , it is better to have the movable element's images,in different views */
 class PlayerIcon extends JLabel {
@@ -568,9 +576,9 @@ class TilesMouseListener implements MouseListener {
        // System.out.printf("Clicked :(%d,%d)\n", i, j);
         if(GameController.gettingDestinationAndMove(i,j)== true) {
             if (GameController.getTurn()==2) {
-                GameGUI.P1.moveTo(i, j);
+                GameGUI.getP1().moveTo(i, j);
             } else {
-                GameGUI.P2.moveTo(i, j);
+                GameGUI.getP2().moveTo(i, j);
             }
         }else /* if the move is not valid */
             JOptionPane.showMessageDialog(null, "این حرکت مجاز نمی باشد!");
